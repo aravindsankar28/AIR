@@ -99,9 +99,9 @@ public class Main {
 			collectionDistribution.put(word, 0.0);
 
 		ArrayList<Double> tempListK = new ArrayList<>();
-		for(int j = 0 ; j < K; j ++)
+		for (int j = 0; j < K; j++)
 			tempListK.add(-1.0);
-		
+
 		int totalCount = 0;
 
 		for (int d = 0; d < documents.size(); d++) {
@@ -207,6 +207,60 @@ public class Main {
 	}
 
 	void mStep() {
+		// Update p(w | theta_j)
+
+		for (int j = 0; j < K; j++) {
+			ArrayList<Double> denominatorValues = new ArrayList<>();
+			System.out.println(vocabulary.size());
+			System.out.println(wordTopicDistrbutionTheta.size());
+			for (String word : wordTopicDistrbutionTheta.keySet()) {
+				// For every word, topic combination, update P(w | theta_j).
+				double numerator = 0.0;
+				for (int d = 0; d < documents.size(); d++) {
+
+					if (!documents.get(d).containsKey(word))
+						continue;
+
+					numerator += documents.get(d).get(word)
+							* (1 - hiddenVariableDistributionBackground.get(d).get(word))
+							* hiddenVariableDistributionTopics.get(d).get(word).get(j);
+				}
+				denominatorValues.add(numerator);
+				wordTopicDistrbutionTheta.get(word).set(j, numerator);
+			}
+
+			double denominator = 0.0;
+			for (Double x : denominatorValues)
+				denominator += x;
+			for (String word : wordTopicDistrbutionTheta.keySet()) {
+				wordTopicDistrbutionTheta.get(word).set(j, wordTopicDistrbutionTheta.get(word).get(j) / denominator);
+			}
+		}
+
+		// Update PI_dj
+		for (int d = 0; d < documents.size(); d++) {
+			HashMap<String, Integer> doc = documents.get(d);
+			ArrayList<Double> denominatorValues = new ArrayList<Double>();
+
+			for (int j = 0; j < K; j++) {
+				double numerator = 0.0;
+				for (String word : doc.keySet()) {
+					numerator += doc.get(word) * (1 - hiddenVariableDistributionBackground.get(d).get(word))
+							* hiddenVariableDistributionTopics.get(d).get(word).get(j);
+					denominatorValues.add(numerator);
+					documentTopicDistributionPi.get(d).set(j, numerator);
+				}
+
+			}
+
+			double denominator = 0.0;
+			for (Double x : denominatorValues)
+				denominator += x;
+
+			for (int j = 0; j < K; j++) {
+				documentTopicDistributionPi.get(d).set(j, documentTopicDistributionPi.get(d).get(j) / denominator);
+			}
+		}
 
 	}
 
