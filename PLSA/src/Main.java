@@ -23,7 +23,6 @@ public class Main {
 	HashMap<String, Double> collectionDistribution;
 	Set<String> vocabulary;
 	Random randomGenerator;
-
 	/**
 	 * EM parameters basic
 	 */
@@ -126,16 +125,16 @@ public class Main {
 		wordTopicDistrbutionTheta = new HashMap<>();
 		for (String word : vocabulary)
 			wordTopicDistrbutionTheta.put(word, generateRandomProbabilityDistribution(K));
-
+		
 		documentTopicDistributionPi = new ArrayList<>();
 		for (int i = 0; i < documents.size(); i++) {
 			documentTopicDistributionPi.add(generateRandomProbabilityDistribution(K));
 		}
-
+		
 	}
 
 	ArrayList<Double> generateRandomProbabilityDistribution(int K) {
-		randomGenerator = new Random(seed);
+		randomGenerator = new Random();
 		ArrayList<Double> probabilityDistribution = new ArrayList<Double>();
 		ArrayList<Integer> randomArray = new ArrayList<>();
 		for (int i = 0; i < K - 1; i++) {
