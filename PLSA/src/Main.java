@@ -15,8 +15,8 @@ import java.util.Set;
  */
 public class Main {
 
-	double lambda;
-	int K = 10;
+	double lambda = 0.1;
+	int K = 5;
 	int seed = 0;
 
 	ArrayList<HashMap<String, Integer>> documents;
@@ -197,22 +197,20 @@ public class Main {
 					double numerator = documentTopicDistributionPi.get(d).get(j);
 					hiddenVariableDistributionTopics.get(d).get(word).set(j, numerator / denominator);
 				}
-
+				// System.out.println(hiddenVariableDistributionTopics.get(d).get(word));
 				// Need to compute hidden var. distribution for B.
 				double bpNumerator = lambda * collectionDistribution.get(word);
 				double bpValue = bpNumerator / (bpNumerator + (1 - lambda) * denominator);
-
+				hiddenVariableDistributionBackground.get(d).put(word, bpValue);
 			}
 		}
 	}
 
 	void mStep() {
 		// Update p(w | theta_j)
-
+/*
 		for (int j = 0; j < K; j++) {
 			ArrayList<Double> denominatorValues = new ArrayList<>();
-			System.out.println(vocabulary.size());
-			System.out.println(wordTopicDistrbutionTheta.size());
 			for (String word : wordTopicDistrbutionTheta.keySet()) {
 				// For every word, topic combination, update P(w | theta_j).
 				double numerator = 0.0;
@@ -235,8 +233,38 @@ public class Main {
 			for (String word : wordTopicDistrbutionTheta.keySet()) {
 				wordTopicDistrbutionTheta.get(word).set(j, wordTopicDistrbutionTheta.get(word).get(j) / denominator);
 			}
-		}
+		}*/
 
+		for (int j = 0; j < K; j++) {
+			HashMap<String, Double> pwj = new HashMap<String, Double>();
+			ArrayList<Double> denominatorValues = new ArrayList<>();
+			for(int d = 0; d < documents.size() ; d++)
+			{
+				for(String word : documents.get(d).keySet())
+				{
+					// System.out.println(hiddenVariableDistributionTopics.get(d).get(word).get(j));
+					
+					double numerator = documents.get(d).get(word)
+							* (1 - hiddenVariableDistributionBackground.get(d).get(word))
+							* hiddenVariableDistributionTopics.get(d).get(word).get(j);
+					// System.out.println(numerator);
+					if(pwj.containsKey(word))
+						pwj.put(word, pwj.get(word)+ numerator);
+					else
+						pwj.put(word, numerator);
+					denominatorValues.add(numerator);
+				}
+			}
+			
+			double denominator = 0.0;
+			for(Double x : denominatorValues)
+				denominator += x;
+			for (String word : wordTopicDistrbutionTheta.keySet()) {
+				wordTopicDistrbutionTheta.get(word).set(j, pwj.get(word) / denominator);
+			}
+			
+		}
+		
 		// Update PI_dj
 		for (int d = 0; d < documents.size(); d++) {
 			HashMap<String, Integer> doc = documents.get(d);
