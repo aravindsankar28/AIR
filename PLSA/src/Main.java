@@ -216,7 +216,7 @@ public class Main {
 
 				for (int j = 0; j < K; j++) {
 					// Compute P(z_dw = j)
-					double numerator = documentTopicDistributionPi.get(d).get(j);
+					double numerator = documentTopicDistributionPi.get(d).get(j)* wordTopicDistrbutionTheta.get(word).get(j);
 					// System.out.println(numerator);
 					hiddenVariableDistributionTopics.get(d).get(word).set(j, numerator / denominator);
 				}
@@ -313,7 +313,7 @@ public class Main {
 	}
 
 	void emIterations() {
-		for (int iter = 0; iter < 5; iter++) {
+		for (int iter = 0; iter < 10; iter++) {
 			System.out.println("word dist. check " +wordTopicDistrbutionThetaCheck());
 			System.out.println("doc topic dist. check  "+documentTopicDistributionPiCheck());
 			System.out.println("Log likelihood at iter " + iter + " : " + computeLogLikelihood());
@@ -365,5 +365,8 @@ public class Main {
 		object.estimateCollectionLanguageModel();
 		object.randomParameterInitialization();
 		object.emIterations();
+		
+		
+		
 	}
 }
