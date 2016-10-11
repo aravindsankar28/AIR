@@ -23,6 +23,7 @@ public class Main {
 	HashMap<String, Double> collectionDistribution;
 	Set<String> vocabulary;
 	Random randomGenerator;
+	double previousLikelihood = 0.0;
 	/**
 	 * EM parameters basic
 	 */
@@ -192,11 +193,17 @@ public class Main {
 				double logSubTerm = 0.0;
 				logSubTerm += lambda * collectionDistribution.get(word);
 				for (int j = 0; j < K; j++) {
+					if (Double.isNaN(documentTopicDistributionPi.get(d).get(j)))
+						System.out.println("Alert pi");
+					if (Double.isNaN(wordTopicDistrbutionTheta.get(word).get(j)))
+						System.out.println("Alert p");
 					logSubTerm += (1 - lambda) * documentTopicDistributionPi.get(d).get(j)
 							* wordTopicDistrbutionTheta.get(word).get(j);
 				}
-				if (logSubTerm <= 0.0)
+				if (Double.isNaN(logSubTerm)) {
 					System.out.println("Screwed");
+					System.exit(0);
+				}
 				L += doc.get(word) * Math.log(logSubTerm);
 			}
 		}
@@ -216,19 +223,22 @@ public class Main {
 					denominator += documentTopicDistributionD.get(l) * wordTopicW.get(l);
 				}
 
+				
 				for (int j = 0; j < K; j++) {
 					// Compute P(z_dw = j)
 					double numerator = documentTopicDistributionD.get(j) * wordTopicW.get(j);
-					// System.out.println(numerator);
-					if (numerator <= 0.0) {
-						System.out.println(d);
-						System.out.println(j);
-						System.out.println(documentTopicDistributionPi.get(d).get(j));
-						System.out.println(wordTopicDistrbutionTheta.get(word).get(j));
-						System.out.println("NEGATIVE - screwup");
-					}
-					hiddenD.get(word).set(j, (numerator / denominator));
+					hiddenD.get(word).set(j, (numerator / denominator));	
 				}
+				// TODO : setting uniform in case where denominator becomes 0
+				if (denominator <= 0.0) {
+					for (int j = 0; j < K; j++) {
+						// Compute P(z_dw = j)
+						
+						hiddenD.get(word).set(j, 1.0/K);	
+					}
+				}
+				
+				
 				// System.out.println(hiddenVariableDistributionTopics.get(d).get(word));
 				// Need to compute hidden var. distribution for B.
 				double bpNumerator = lambda * collectionDistribution.get(word);
@@ -291,7 +301,15 @@ public class Main {
 			// denominator += x;
 
 			for (String word : wordTopicDistrbutionTheta.keySet()) {
+				// if (denominator > 0.0)
+
 				wordTopicDistrbutionTheta.get(word).set(j, pwj.get(word) / denominator);
+				if (Double.isNaN(wordTopicDistrbutionTheta.get(word).get(j))) {
+					System.out.println("Trouble in word dist - m step.");
+					System.exit(0);
+				}
+				// else
+				// wordTopicDistrbutionTheta.get(word).set(j, 0.0);
 			}
 
 		}
@@ -323,23 +341,38 @@ public class Main {
 			// denominator += x;
 
 			for (int j = 0; j < K; j++) {
+				// if (denominator > 0.0)
 				documentTopicD.set(j, documentTopicDistributionPi.get(d).get(j) / denominator);
+				// else
+				// documentTopicD.set(j, 0.0);
 			}
 		}
-
+		System.out.println("mstep over");
 	}
 
 	void emIterations() {
 		for (int iter = 0; iter < 50; iter++) {
-			System.out.println("word dist. check " + wordTopicDistrbutionThetaCheck());
-			System.out.println("doc topic dist. check  " + documentTopicDistributionPiCheck());
-			System.out.println("hidden  dist. check  " + hiddenDistrbutionCheck());
-
-			System.out.println("Log likelihood at iter " + iter + " : " + computeLogLikelihood());
+			double currentLikelihood = computeLogLikelihood();
+			System.out.println("Log likelihood at iter " + iter + " : " + currentLikelihood);
+			double relativeChange = (previousLikelihood - currentLikelihood) / previousLikelihood;
+			System.out.println("Relative change = " + relativeChange);
+			if (relativeChange < 0.0001) {
+				System.out.println("Relative change less than threshold");
+				System.exit(0);
+			}
+			previousLikelihood = currentLikelihood;
 			double start = System.currentTimeMillis();
 			eStep();
+
+			System.out.println("hidden dist. check " + hiddenDistrbutionCheck());
+
 			mStep();
+
+			System.out.println("word dist. check " + wordTopicDistrbutionThetaCheck());
+			System.out.println("doc topic dist. check  " + documentTopicDistributionPiCheck());
+
 			System.out.println("Time taken = " + (System.currentTimeMillis() - start) / 1000.0);
+			System.out.println("\n");
 		}
 	}
 
@@ -349,10 +382,37 @@ public class Main {
 			temp.put(d, 0.0);
 		}
 
+		// Re-normalize if found negative.
+
+		for (int d = 0; d < documents.size(); d++) {
+			boolean foundNegative = false;
+			for (int j = 0; j < K; j++) {
+				if (documentTopicDistributionPi.get(d).get(j) < 0.0) {
+					// System.out.println("Negative - doc. topic");
+					// double z = documentTopicDistributionPi.get(d).get(j);
+					documentTopicDistributionPi.get(d).set(j, 0.0);
+					foundNegative = true;
+				}
+
+				// temp.put(d, temp.get(d) +
+				// documentTopicDistributionPi.get(d).get(j));
+			}
+
+			// re-normalize this.
+			if (foundNegative) {
+				double sum = 0.0;
+				for (int t = 0; t < K; t++)
+					sum += documentTopicDistributionPi.get(d).get(t);
+
+				for (int t = 0; t < K; t++)
+					documentTopicDistributionPi.get(d).set(t, documentTopicDistributionPi.get(d).get(t) / sum);
+
+			}
+		}
+
+		// Checking part.
 		for (int d = 0; d < documents.size(); d++) {
 			for (int j = 0; j < K; j++) {
-				if (documentTopicDistributionPi.get(d).get(j) <= 0.0)
-					return false;
 				temp.put(d, temp.get(d) + documentTopicDistributionPi.get(d).get(j));
 			}
 		}
@@ -368,12 +428,33 @@ public class Main {
 		for (int j = 0; j < K; j++) {
 			temp.put(j, 0.0);
 		}
+
+		for (int j = 0; j < K; j++) {
+			boolean foundNegative = false;
+
+			for (String word : vocabulary) {
+
+				if (wordTopicDistrbutionTheta.get(word).get(j) < 0) {
+					// double z = wordTopicDistrbutionTheta.get(word).get(j);
+					wordTopicDistrbutionTheta.get(word).set(j, 0.0);
+					foundNegative = true;
+					// re normalize
+				}
+			}
+
+			if (foundNegative) {
+				// re normalize
+				double sum = 0.0;
+				for (String w : vocabulary)
+					sum += wordTopicDistrbutionTheta.get(w).get(j);
+				for (String w : vocabulary)
+					wordTopicDistrbutionTheta.get(w).set(j, wordTopicDistrbutionTheta.get(w).get(j) / sum);
+			}
+		}
+
+		// Count check.
 		for (String word : vocabulary) {
 			for (int j = 0; j < K; j++) {
-				if (wordTopicDistrbutionTheta.get(word).get(j) <= 0) {
-					System.out.println("Negative prob.");
-					return false;
-				}
 				temp.put(j, temp.get(j) + wordTopicDistrbutionTheta.get(word).get(j));
 			}
 		}
@@ -395,12 +476,35 @@ public class Main {
 		for (int d = 0; d < documents.size(); d++) {
 			for (String word : documents.get(d).keySet()) {
 				ArrayList<Double> hiddenVars = hiddenVariableDistributionTopics.get(d).get(word);
-				 double z = 0.0;
-				for (Double val : hiddenVars) {
-					if (val <= 0.0)
-						return false;
-					z += val;
+				double z = 0.0;
+				boolean foundNegative = false;
+
+				for (int j = 0; j < hiddenVariableDistributionTopics.get(d).get(word).size(); j++) {
+					if (hiddenVariableDistributionTopics.get(d).get(word).get(j) < 0.0) {
+						foundNegative = true;
+						// double a =
+						// hiddenVariableDistributionTopics.get(d).get(word).get(j);
+						hiddenVariableDistributionTopics.get(d).get(word).set(j, 0.0);
+						// re- normalize.
+					}
 				}
+				if (foundNegative) {
+					// re- normalize
+					double sum = 0.0;
+					for (int t = 0; t < K; t++)
+						sum += hiddenVariableDistributionTopics.get(d).get(word).get(t);
+
+					// sum -= a;
+					for (int t = 0; t < K; t++) {
+						hiddenVariableDistributionTopics.get(d).get(word).set(t,
+								hiddenVariableDistributionTopics.get(d).get(word).get(t) / sum);
+					}
+				}
+
+				for (int j = 0; j < hiddenVariableDistributionTopics.get(d).get(word).size(); j++) {
+					z += hiddenVariableDistributionTopics.get(d).get(word).get(j);
+				}
+
 				if (Math.abs(z - 1.0) > 0.0001)
 					return false;
 			}
