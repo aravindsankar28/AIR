@@ -1,13 +1,8 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-
+import java.util.*;
+import java.util.Map.Entry;
 /**
  * 
  * TODO : Currently every distribution gets same initial parameter values. Need
@@ -59,10 +54,13 @@ public class Main {
 	ArrayList<HashMap<String, Double>> hiddenVariableDistributionBackground;
 
 	ArrayList<Double> likelihood;
-
+	ArrayList<Double> relativeLikelihoodChange;
+	
 	public Main() {
 		hiddenVariableDistributionTopics = new ArrayList<>();
 		hiddenVariableDistributionBackground = new ArrayList<>();
+		likelihood = new ArrayList<Double>();
+		relativeLikelihoodChange = new ArrayList<>();
 	}
 
 	/*
@@ -351,14 +349,16 @@ public class Main {
 	}
 
 	void emIterations() {
-		for (int iter = 0; iter < 50; iter++) {
+		for (int iter = 0; iter < 100; iter++) {
 			double currentLikelihood = computeLogLikelihood();
 			System.out.println("Log likelihood at iter " + iter + " : " + currentLikelihood);
 			double relativeChange = (previousLikelihood - currentLikelihood) / previousLikelihood;
 			System.out.println("Relative change = " + relativeChange);
+			likelihood.add(currentLikelihood);
+			relativeLikelihoodChange.add(relativeChange);
 			if (relativeChange < 0.0001) {
 				System.out.println("Relative change less than threshold");
-				System.exit(0);
+				break;
 			}
 			previousLikelihood = currentLikelihood;
 			double start = System.currentTimeMillis();
@@ -374,8 +374,77 @@ public class Main {
 			System.out.println("Time taken = " + (System.currentTimeMillis() - start) / 1000.0);
 			System.out.println("\n");
 		}
+		printResults();
+	}
+	
+	 static class MapUtil
+	{
+	     static <K, V extends Comparable<? super V>> Map<K, V> 
+	        sortByValue( Map<K, V> map )
+	    {
+	        List<Map.Entry<K, V>> list =
+	            new LinkedList<Map.Entry<K, V>>( map.entrySet() );
+	        Collections.sort( list, new Comparator<Map.Entry<K, V>>()
+	        {
+	            public int compare( Map.Entry<K, V> o1, Map.Entry<K, V> o2 )
+	            {
+	                return -1*(o1.getValue()).compareTo( o2.getValue() );
+	            }
+	        } );
+
+	        Map<K, V> result = new LinkedHashMap<K, V>();
+	        for (Map.Entry<K, V> entry : list)
+	        {
+	            result.put( entry.getKey(), entry.getValue() );
+	        }
+	        return result;
+	    }
 	}
 
+	
+void printResults()
+{
+	System.out.println("Likelihood at each iteration");
+	for(int iter = 1 ; iter <= likelihood.size() ; iter++)
+		System.out.println(iter+"\t"+likelihood.get(iter-1));
+
+	System.out.println("Relative change in likelihood at each iteration");
+	for(int iter = 1 ; iter <= likelihood.size() ; iter++)
+		System.out.println(iter+"\t"+relativeLikelihoodChange.get(iter-1));
+	
+	ArrayList<HashMap<String,Double>> topicWords = new ArrayList();
+	ArrayList <HashMap<String,Double>> topicWordsTop = new ArrayList<>();
+	
+	for(int j = 0 ; j < K ; j ++)
+	{
+		topicWords.add(new HashMap<>());
+	}
+	
+	for(String word : vocabulary)
+	{
+		for(int j = 0 ; j < K ; j ++)
+		{
+			topicWords.get(j).put(word, wordTopicDistrbutionTheta.get(word).get(j));
+		}
+	}
+	
+	for(int j = 0 ; j < K ; j ++)
+	{
+		HashMap<String, Double> wordDist = topicWords.get(j);
+		Map<String, Double> temp = MapUtil.sortByValue(wordDist);
+		System.out.println("Top words in topic "+(j+1));
+		
+		int counter =0 ;
+		for(Entry<String, Double> entry : temp.entrySet()) {   
+            System.out.print(entry.getKey()+"\t");
+            counter ++;
+            if(counter == 10)
+            	break;
+        }
+		System.out.println();
+	}
+	
+}
 	boolean documentTopicDistributionPiCheck() {
 		HashMap<Integer, Double> temp = new HashMap<>();
 		for (int d = 0; d < documents.size(); d++) {
@@ -511,10 +580,11 @@ public class Main {
 		}
 		return true;
 	}
+	
+	
 
 	public static void main(String[] args) throws IOException {
 		Main object = new Main();
-		System.out.println(Double.MIN_VALUE);
 		object.readDataset("dblp-small.txt");
 		object.estimateCollectionLanguageModel();
 		object.randomParameterInitialization();
