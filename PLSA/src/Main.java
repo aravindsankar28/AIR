@@ -3,6 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
+
 /**
  * 
  * TODO : Currently every distribution gets same initial parameter values. Need
@@ -55,12 +56,16 @@ public class Main {
 
 	ArrayList<Double> likelihood;
 	ArrayList<Double> relativeLikelihoodChange;
-	
+	ArrayList<ArrayList<Double>> n_dj;
+	HashMap<String, ArrayList<Double>> n_wj;
+
 	public Main() {
 		hiddenVariableDistributionTopics = new ArrayList<>();
 		hiddenVariableDistributionBackground = new ArrayList<>();
 		likelihood = new ArrayList<Double>();
 		relativeLikelihoodChange = new ArrayList<>();
+		n_dj = new ArrayList<>();
+		n_wj = new HashMap<>();
 	}
 
 	/*
@@ -93,16 +98,23 @@ public class Main {
 	 */
 	void estimateCollectionLanguageModel() {
 		collectionDistribution = new HashMap<>();
-		for (String word : vocabulary)
-			collectionDistribution.put(word, 0.0);
 
 		ArrayList<Double> tempListK = new ArrayList<>();
-		for (int j = 0; j < K; j++)
+		ArrayList<Double> tempListZero = new ArrayList<>();
+		for (int j = 0; j < K; j++) {
 			tempListK.add(-1.0);
+			tempListZero.add(0.0);
+		}
+
+		for (String word : vocabulary) {
+			collectionDistribution.put(word, 0.0);
+			n_wj.put(word, new ArrayList<>(tempListZero));
+		}
 
 		int totalCount = 0;
 
 		for (int d = 0; d < documents.size(); d++) {
+			n_dj.add(new ArrayList<>(tempListZero));
 			HashMap<String, Integer> doc = documents.get(d);
 			hiddenVariableDistributionTopics.add(new HashMap<String, ArrayList<Double>>());
 			hiddenVariableDistributionBackground.add(new HashMap<String, Double>());
@@ -214,6 +226,7 @@ public class Main {
 			HashMap<String, ArrayList<Double>> hiddenD = hiddenVariableDistributionTopics.get(d);
 			ArrayList<Double> documentTopicDistributionD = documentTopicDistributionPi.get(d);
 			for (String word : doc.keySet()) {
+
 				// This is common across all z_dw
 				double denominator = 0.0;
 				ArrayList<Double> wordTopicW = wordTopicDistrbutionTheta.get(word);
@@ -221,131 +234,142 @@ public class Main {
 					denominator += documentTopicDistributionD.get(l) * wordTopicW.get(l);
 				}
 
-				
-				for (int j = 0; j < K; j++) {
-					// Compute P(z_dw = j)
-					double numerator = documentTopicDistributionD.get(j) * wordTopicW.get(j);
-					hiddenD.get(word).set(j, (numerator / denominator));	
-				}
-				// TODO : setting uniform in case where denominator becomes 0
-				if (denominator <= 0.0) {
-					for (int j = 0; j < K; j++) {
-						// Compute P(z_dw = j)
-						
-						hiddenD.get(word).set(j, 1.0/K);	
-					}
-				}
-				
-				
 				// System.out.println(hiddenVariableDistributionTopics.get(d).get(word));
 				// Need to compute hidden var. distribution for B.
 				double bpNumerator = lambda * collectionDistribution.get(word);
 				double bpValue = bpNumerator / (bpNumerator + (1 - lambda) * denominator);
-				hiddenVariableDistributionBackground.get(d).put(word, bpValue);
+				// hiddenVariableDistributionBackground.get(d).put(word, bpValue);
+
+				for (int j = 0; j < K; j++) {
+					// Compute P(z_dw = j)
+					double numerator = documentTopicDistributionD.get(j) * wordTopicW.get(j);
+					// hiddenD.get(word).set(j, (numerator / denominator));
+					if (denominator > 0) {
+						n_dj.get(d).set(j,
+								n_dj.get(d).get(j) + doc.get(word) * (1 - bpValue) * (numerator / denominator));
+						n_wj.get(word).set(j,
+								n_wj.get(word).get(j) + doc.get(word) * (1 - bpValue) * (numerator / denominator));
+
+					} else {
+						n_dj.get(d).set(j,
+								n_dj.get(d).get(j) + doc.get(word) * (1 - bpValue) * (1.0 / K));
+						n_wj.get(word).set(j,
+								n_wj.get(word).get(j) + doc.get(word) * (1 - bpValue) * (1.0 / K));
+					}
+				}
+
+				
+				// TODO : setting uniform in case where denominator becomes 0
+				if (denominator <= 0.0) {
+					for (int j = 0; j < K; j++) {
+						// Compute P(z_dw = j)
+						hiddenD.get(word).set(j, 1.0 / K);
+					}
+				}
+
 			}
 		}
+
 		System.out.println("E step over");
 	}
 
 	void mStep() {
 		// Update p(w | theta_j)
 		/*
-		 * for (int j = 0; j < K; j++) { ArrayList<Double> denominatorValues =
-		 * new ArrayList<>(); for (String word :
-		 * wordTopicDistrbutionTheta.keySet()) { // For every word, topic
-		 * combination, update P(w | theta_j). double numerator = 0.0; for (int
-		 * d = 0; d < documents.size(); d++) {
+		 * for (int j = 0; j < K; j++) { HashMap<String, Double> pwj = new
+		 * HashMap<String, Double>(); // ArrayList<Double> denominatorValues =
+		 * new ArrayList<>(); double denominator = 0.0; for (int d = 0; d <
+		 * documents.size(); d++) { HashMap<String, Integer> doc =
+		 * documents.get(d); HashMap<String, Double> hiddenBackgroundD =
+		 * hiddenVariableDistributionBackground.get(d); HashMap<String,
+		 * ArrayList<Double>> hiddenTopicD =
+		 * hiddenVariableDistributionTopics.get(d); for (String word :
+		 * documents.get(d).keySet()) { double numerator = doc.get(word) * (1 -
+		 * hiddenBackgroundD.get(word)) hiddenTopicD.get(word).get(j); //
+		 * System.out.println(numerator); if (pwj.containsKey(word))
+		 * pwj.put(word, pwj.get(word) + numerator); else pwj.put(word,
+		 * numerator); // denominatorValues.add(numerator); denominator +=
+		 * numerator; } }
 		 * 
-		 * if (!documents.get(d).containsKey(word)) continue;
+		 * for (String word : wordTopicDistrbutionTheta.keySet()) { // if
+		 * (denominator > 0.0)
 		 * 
-		 * numerator += documents.get(d).get(word) (1 -
-		 * hiddenVariableDistributionBackground.get(d).get(word))
-		 * hiddenVariableDistributionTopics.get(d).get(word).get(j); }
-		 * denominatorValues.add(numerator);
-		 * wordTopicDistrbutionTheta.get(word).set(j, numerator); }
+		 * wordTopicDistrbutionTheta.get(word).set(j, pwj.get(word) /
+		 * denominator); if
+		 * (Double.isNaN(wordTopicDistrbutionTheta.get(word).get(j))) {
+		 * System.out.println("Trouble in word dist - m step."); System.exit(0);
+		 * } // else // wordTopicDistrbutionTheta.get(word).set(j, 0.0); }
 		 * 
-		 * double denominator = 0.0; for (Double x : denominatorValues)
-		 * denominator += x; for (String word :
-		 * wordTopicDistrbutionTheta.keySet()) {
-		 * wordTopicDistrbutionTheta.get(word).set(j,
-		 * wordTopicDistrbutionTheta.get(word).get(j) / denominator); } }
+		 * }
+		 * 
+		 * 
+		 * // Update PI_dj for (int d = 0; d < documents.size(); d++) {
+		 * HashMap<String, Integer> doc = documents.get(d); // ArrayList<Double>
+		 * denominatorValues = new ArrayList<Double>(); ArrayList<Double>
+		 * documentTopicD = documentTopicDistributionPi.get(d); HashMap<String,
+		 * Double> hiddenVariableDistributionBackgroundD =
+		 * hiddenVariableDistributionBackground.get(d); HashMap<String,
+		 * ArrayList<Double>> hiddenVariableDistributionTopicsD =
+		 * hiddenVariableDistributionTopics .get(d); double denominator = 0.0;
+		 * for (int j = 0; j < K; j++) { double numerator = 0.0; for (String
+		 * word : doc.keySet()) { numerator += doc.get(word) * (1 -
+		 * hiddenVariableDistributionBackgroundD.get(word))
+		 * hiddenVariableDistributionTopicsD.get(word).get(j);
+		 * documentTopicD.set(j, numerator); // System.out.println(numerator); }
+		 * denominator += numerator; // denominatorValues.add(numerator); }
+		 * 
+		 * for (int j = 0; j < K; j++) { // if (denominator > 0.0)
+		 * documentTopicD.set(j, documentTopicDistributionPi.get(d).get(j) /
+		 * denominator); // else // documentTopicD.set(j, 0.0); } }
 		 */
 
-		for (int j = 0; j < K; j++) {
-			HashMap<String, Double> pwj = new HashMap<String, Double>();
-			// ArrayList<Double> denominatorValues = new ArrayList<>();
-			double denominator = 0.0;
-			for (int d = 0; d < documents.size(); d++) {
-				HashMap<String, Integer> doc = documents.get(d);
-				HashMap<String, Double> hiddenBackgroundD = hiddenVariableDistributionBackground.get(d);
-				HashMap<String, ArrayList<Double>> hiddenTopicD = hiddenVariableDistributionTopics.get(d);
-				for (String word : documents.get(d).keySet()) {
-					// System.out.println(hiddenVariableDistributionTopics.get(d).get(word).get(j));
-					// System.out.println(hiddenVariableDistributionBackground.get(d).get(word));
-
-					double numerator = doc.get(word) * (1 - hiddenBackgroundD.get(word))
-							* hiddenTopicD.get(word).get(j);
-					// System.out.println(numerator);
-					if (pwj.containsKey(word))
-						pwj.put(word, pwj.get(word) + numerator);
-					else
-						pwj.put(word, numerator);
-					// denominatorValues.add(numerator);
-					denominator += numerator;
-				}
+		// Compute pi
+		for (int d = 0; d < documents.size(); d++) {
+			double sum = 0.0;
+			for (int j = 0; j < K; j++) {
+				sum += n_dj.get(d).get(j);
 			}
+			for (int j = 0; j < K; j++) {
+				documentTopicDistributionPi.get(d).set(j, n_dj.get(d).get(j) / sum);
+				// if(documentTopicDistributionPi.get(d).get(j) !=
+				// n_dj.get(d).get(j)/sum)
+				// System.err.println("no pi");
+				// System.out.println(documentTopicDistributionPi.get(d).get(j)+"
+				// "+n_dj.get(d).get(j)/sum);
+				n_dj.get(d).set(j, 0.0);
 
-			// for (Double x : denominatorValues)
-			// denominator += x;
-
-			for (String word : wordTopicDistrbutionTheta.keySet()) {
-				// if (denominator > 0.0)
-
-				wordTopicDistrbutionTheta.get(word).set(j, pwj.get(word) / denominator);
-				if (Double.isNaN(wordTopicDistrbutionTheta.get(word).get(j))) {
-					System.out.println("Trouble in word dist - m step.");
-					System.exit(0);
-				}
-				// else
-				// wordTopicDistrbutionTheta.get(word).set(j, 0.0);
 			}
-
 		}
 
-		// for(String word : wordTopicDistrbutionTheta.keySet())
-		// System.out.println(word+" "+wordTopicDistrbutionTheta.get(word));
-		// Update PI_dj
-		for (int d = 0; d < documents.size(); d++) {
-			HashMap<String, Integer> doc = documents.get(d);
-			// ArrayList<Double> denominatorValues = new ArrayList<Double>();
-			ArrayList<Double> documentTopicD = documentTopicDistributionPi.get(d);
-			HashMap<String, Double> hiddenVariableDistributionBackgroundD = hiddenVariableDistributionBackground.get(d);
-			HashMap<String, ArrayList<Double>> hiddenVariableDistributionTopicsD = hiddenVariableDistributionTopics
-					.get(d);
-			double denominator = 0.0;
-			for (int j = 0; j < K; j++) {
-				double numerator = 0.0;
-				for (String word : doc.keySet()) {
-					numerator += doc.get(word) * (1 - hiddenVariableDistributionBackgroundD.get(word))
-							* hiddenVariableDistributionTopicsD.get(word).get(j);
-					documentTopicD.set(j, numerator);
-					// System.out.println(numerator);
-				}
-				denominator += numerator;
-				// denominatorValues.add(numerator);
+		// Compute p(w| theta)
+		ArrayList<Double> sumList = new ArrayList<>();
+		for (int j = 0; j < K; j++) {
+			double sum = 0.0;
+			for (String word : wordTopicDistrbutionTheta.keySet()) {
+				sum += n_wj.get(word).get(j);
 			}
 
-			// for (Double x : denominatorValues)
-			// denominator += x;
+			sumList.add(sum);
+		}
 
+		for (String word : wordTopicDistrbutionTheta.keySet()) {
 			for (int j = 0; j < K; j++) {
-				// if (denominator > 0.0)
-				documentTopicD.set(j, documentTopicDistributionPi.get(d).get(j) / denominator);
-				// else
-				// documentTopicD.set(j, 0.0);
+
+				wordTopicDistrbutionTheta.get(word).set(j, n_wj.get(word).get(j) / sumList.get(j));
+				if (wordTopicDistrbutionTheta.get(word).get(j) != n_wj.get(word).get(j) / sumList.get(j)) {
+					// System.out.println(wordTopicDistrbutionTheta.get(word).get(j)+"
+					// "+n_wj.get(word).get(j)/sumList.get(j));
+					// System.out.println("no theta");
+					// System.exit(0);
+				}
+
+				// System.out.println(wordTopicDistrbutionTheta.get(word).get(j)+"
+				// "+n_wj.get(word).get(j)/sumList.get(j));
+				n_wj.get(word).set(j, 0.0);
 			}
 		}
 		System.out.println("mstep over");
+
 	}
 
 	void emIterations() {
@@ -364,87 +388,76 @@ public class Main {
 			double start = System.currentTimeMillis();
 			eStep();
 
-			System.out.println("hidden dist. check " + hiddenDistrbutionCheck());
+			// System.out.println("hidden dist. check " +
+			// hiddenDistrbutionCheck());
 
 			mStep();
 
-			System.out.println("word dist. check " + wordTopicDistrbutionThetaCheck());
-			System.out.println("doc topic dist. check  " + documentTopicDistributionPiCheck());
+			// System.out.println("word dist. check " + wordTopicDistrbutionThetaCheck());
+			// System.out.println("doc topic dist. check  " + documentTopicDistributionPiCheck());
 
 			System.out.println("Time taken = " + (System.currentTimeMillis() - start) / 1000.0);
 			System.out.println("\n");
 		}
 		printResults();
 	}
-	
-	 static class MapUtil
-	{
-	     static <K, V extends Comparable<? super V>> Map<K, V> 
-	        sortByValue( Map<K, V> map )
-	    {
-	        List<Map.Entry<K, V>> list =
-	            new LinkedList<Map.Entry<K, V>>( map.entrySet() );
-	        Collections.sort( list, new Comparator<Map.Entry<K, V>>()
-	        {
-	            public int compare( Map.Entry<K, V> o1, Map.Entry<K, V> o2 )
-	            {
-	                return -1*(o1.getValue()).compareTo( o2.getValue() );
-	            }
-	        } );
 
-	        Map<K, V> result = new LinkedHashMap<K, V>();
-	        for (Map.Entry<K, V> entry : list)
-	        {
-	            result.put( entry.getKey(), entry.getValue() );
-	        }
-	        return result;
-	    }
-	}
+	static class MapUtil {
+		static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+			List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(map.entrySet());
+			Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+				public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+					return -1 * (o1.getValue()).compareTo(o2.getValue());
+				}
+			});
 
-	
-void printResults()
-{
-	System.out.println("Likelihood at each iteration");
-	for(int iter = 1 ; iter <= likelihood.size() ; iter++)
-		System.out.println(iter+"\t"+likelihood.get(iter-1));
-
-	System.out.println("Relative change in likelihood at each iteration");
-	for(int iter = 1 ; iter <= likelihood.size() ; iter++)
-		System.out.println(iter+"\t"+relativeLikelihoodChange.get(iter-1));
-	
-	ArrayList<HashMap<String,Double>> topicWords = new ArrayList();
-	ArrayList <HashMap<String,Double>> topicWordsTop = new ArrayList<>();
-	
-	for(int j = 0 ; j < K ; j ++)
-	{
-		topicWords.add(new HashMap<>());
-	}
-	
-	for(String word : vocabulary)
-	{
-		for(int j = 0 ; j < K ; j ++)
-		{
-			topicWords.get(j).put(word, wordTopicDistrbutionTheta.get(word).get(j));
+			Map<K, V> result = new LinkedHashMap<K, V>();
+			for (Map.Entry<K, V> entry : list) {
+				result.put(entry.getKey(), entry.getValue());
+			}
+			return result;
 		}
 	}
-	
-	for(int j = 0 ; j < K ; j ++)
-	{
-		HashMap<String, Double> wordDist = topicWords.get(j);
-		Map<String, Double> temp = MapUtil.sortByValue(wordDist);
-		System.out.println("Top words in topic "+(j+1));
-		
-		int counter =0 ;
-		for(Entry<String, Double> entry : temp.entrySet()) {   
-            System.out.print(entry.getKey()+"\t");
-            counter ++;
-            if(counter == 10)
-            	break;
-        }
-		System.out.println();
+
+	void printResults() {
+		System.out.println("Likelihood at each iteration");
+		for (int iter = 1; iter <= likelihood.size(); iter++)
+			System.out.println(iter + "\t" + likelihood.get(iter - 1));
+
+		System.out.println("Relative change in likelihood at each iteration");
+		for (int iter = 1; iter <= likelihood.size(); iter++)
+			System.out.println(iter + "\t" + relativeLikelihoodChange.get(iter - 1));
+
+		ArrayList<HashMap<String, Double>> topicWords = new ArrayList();
+		ArrayList<HashMap<String, Double>> topicWordsTop = new ArrayList<>();
+
+		for (int j = 0; j < K; j++) {
+			topicWords.add(new HashMap<>());
+		}
+
+		for (String word : vocabulary) {
+			for (int j = 0; j < K; j++) {
+				topicWords.get(j).put(word, wordTopicDistrbutionTheta.get(word).get(j));
+			}
+		}
+
+		for (int j = 0; j < K; j++) {
+			HashMap<String, Double> wordDist = topicWords.get(j);
+			Map<String, Double> temp = MapUtil.sortByValue(wordDist);
+			System.out.println("Top words in topic " + (j + 1));
+
+			int counter = 0;
+			for (Entry<String, Double> entry : temp.entrySet()) {
+				System.out.print(entry.getKey() + "\t");
+				counter++;
+				if (counter == 10)
+					break;
+			}
+			System.out.println();
+		}
+
 	}
-	
-}
+
 	boolean documentTopicDistributionPiCheck() {
 		HashMap<Integer, Double> temp = new HashMap<>();
 		for (int d = 0; d < documents.size(); d++) {
@@ -457,7 +470,7 @@ void printResults()
 			boolean foundNegative = false;
 			for (int j = 0; j < K; j++) {
 				if (documentTopicDistributionPi.get(d).get(j) < 0.0) {
-					// System.out.println("Negative - doc. topic");
+					System.out.println("Negative - doc. topic");
 					// double z = documentTopicDistributionPi.get(d).get(j);
 					documentTopicDistributionPi.get(d).set(j, 0.0);
 					foundNegative = true;
@@ -504,6 +517,7 @@ void printResults()
 			for (String word : vocabulary) {
 
 				if (wordTopicDistrbutionTheta.get(word).get(j) < 0) {
+					System.out.println("hi");
 					// double z = wordTopicDistrbutionTheta.get(word).get(j);
 					wordTopicDistrbutionTheta.get(word).set(j, 0.0);
 					foundNegative = true;
@@ -580,8 +594,6 @@ void printResults()
 		}
 		return true;
 	}
-	
-	
 
 	public static void main(String[] args) throws IOException {
 		Main object = new Main();
