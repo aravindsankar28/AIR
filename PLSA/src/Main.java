@@ -100,9 +100,11 @@ public class Main {
 		for (int d = 0; d < documents.size(); d++) {
 			n_dj.add(new ArrayList<>(tempListZero));
 			HashMap<String, Integer> doc = documents.get(d);
-			totalCount += doc.size();
-			for (String word : doc.keySet())
+
+			for (String word : doc.keySet()) {
+				totalCount += doc.get(word);
 				collectionDistribution.put(word, collectionDistribution.get(word) + doc.get(word));
+			}
 		}
 
 		for (String word : collectionDistribution.keySet())
@@ -140,6 +142,7 @@ public class Main {
 	 * the probabilities of the K variables is 1.
 	 */
 	ArrayList<Double> generateRandomProbabilityDistribution(int K) {
+		// new Random
 		randomGenerator = new Random();
 		ArrayList<Double> probabilityDistribution = new ArrayList<Double>();
 		double sum = 0.0;
