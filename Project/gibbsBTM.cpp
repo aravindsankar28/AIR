@@ -165,7 +165,7 @@ int main(int argc, char const *argv[])
         std::cout << p.first << " generated " << p.second << " times\n";
     }
 
-	char* filename = "train_docs.txt";
+	char* filename = "../train_docs_new.txt";
 	initAssign(filename);
 	for (int i = 0; i < 500; ++i)
 	{
@@ -175,18 +175,18 @@ int main(int argc, char const *argv[])
 
 	for (int t = 0; t < N; ++t)
 	{
-		priority_queue<pair<int,int>> q;
+		priority_queue<pair<int,int> > q;
 		for (int i = 0; i < vocabSize; ++i)
 		{
 			q.push(pair<int,int>(nzw[t][i],i));
 		}
 		for (int i = 0; i < 10; ++i)
 		{
-			int ki = q.top().second;
-			cout << ki<< " "<<wordMapRev.find(ki)->second << " ";
+			int ki = q.top().second; // index
+			cout <<q.top().first << " "<<wordMapRev.find(ki)->second << " ";
 			q.pop();
 		}
-		cout<<endl;
+		cout<<endl<<endl;
 	}
 
 
