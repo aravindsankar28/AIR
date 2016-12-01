@@ -9,10 +9,10 @@
 #include <random>
 
 using namespace std;
-int N = 5;
+int N = 8;
 double alpha = 50.0/N;
 double beta = 0.01;
-int numIter = 100;
+int numIter = 1000;
 int vocabSize;
 int numUnits;
 
@@ -21,11 +21,11 @@ map<int,string> wordMapRev;
 set<string> vocab;
 vector<vector<int> > units;
 //topics = []
-vector<int> assignments;
-int *nz_units;
-int *nz_words;
-int **nwz;
-int **nzw;
+vector<int> assignments; // topic assignment for each word
+int *nz_units; // 
+int *nz_words; // 
+int **nwz; // number of times word w assigned to topic z
+int **nzw; // number of times topic z is assignment to word w.
 
 void split(const std::string &s, char delim, std::vector<std::string> &elems) {
     std::stringstream ss;
@@ -82,12 +82,18 @@ void initAssign(char* filename){
     nzw = new int*[N];
     nz_words = new int[N];
     nz_units = new int[N];
+    fill_n(nz_words, N, 0.0);
+    fill_n(nz_units, N, 0.0);
+
     for (int i = 0; i < vocabSize; i++){
     	nwz[i] = new int[N];
+    	fill_n(nwz[i], N, 0.0);
     }
     for (int i = 0; i < N; i++){
     	nzw[i] = new int[vocabSize];
+    	fill_n(nzw[i], vocabSize, 0.0);
     }
+    
     for (int u = 0; u < units.size(); u++){
     	int t = rand()%N;
     	assignments.push_back(t);
@@ -164,10 +170,11 @@ int main(int argc, char const *argv[])
     for(auto p : m) {
         std::cout << p.first << " generated " << p.second << " times\n";
     }
-
-	char* filename = "../train_docs_new.txt";
+    char* filename = "biterms.txt";
+	
+	// char* filename = "train_docs_new.txt";
 	initAssign(filename);
-	for (int i = 0; i < 500; ++i)
+	for (int i = 0; i < numIter; ++i)
 	{
 		cout << i <<endl;
 		gibbsIteration();
