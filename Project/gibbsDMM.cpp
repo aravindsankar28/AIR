@@ -143,10 +143,9 @@ void gibbsIteration(){
 		int new_topic = d(gen);
 		for (int w_iter = 0; w_iter < unit.size(); ++w_iter)
 		{
-			
+			int w = unit[w_iter];
 			nwz[w][new_topic] += 1;
 			nzw[new_topic][w] += 1;
-			
 		}
 		nz_units[new_topic] += 1;
 		nz_words[new_topic] += unit.size();
