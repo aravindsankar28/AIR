@@ -120,10 +120,18 @@ void gibbsIteration(){
 		vector<int> unit = units[u];
 		int current_topic = assignments[u];
 		// double *probs = new double[N];
-		
+		nz_units[current_topic] -= 1;
+		nz_words[current_topic] -= unit.size();
+		for (int w_iter = 0; w_iter < unit.size(); ++w_iter)
+		{
+			int w = unit[w_iter];
+			nwz[w][current_topic] -= 1;
+			nzw[current_topic][w] -= 1;
+		}
+		//Must subtract current assignments before assigning new topic
 		for (int t = 0; t < N; ++t)
 		{
-			probs[t] = (nz_units[t]*1.0) + alpha;
+			probs[t] = ((nz_units[t]*1.0) + alpha)/(units.size() + N*alpha*1.0);
 			for (int w_iter = 0; w_iter < unit.size(); ++w_iter)
 			{
 				int w = unit[w_iter];
@@ -135,16 +143,12 @@ void gibbsIteration(){
 		int new_topic = d(gen);
 		for (int w_iter = 0; w_iter < unit.size(); ++w_iter)
 		{
-			int w = unit[w_iter];
+			
 			nwz[w][new_topic] += 1;
 			nzw[new_topic][w] += 1;
-			nwz[w][current_topic] -= 1;
-			nzw[current_topic][w] -= 1;
+			
 		}
-
-		nz_units[current_topic] -= 1;
 		nz_units[new_topic] += 1;
-		nz_words[current_topic] -= unit.size();
 		nz_words[new_topic] += unit.size();
 		assignments[u] = new_topic;
 	}
@@ -166,7 +170,7 @@ void outputResult(string f0, string f1 , string f2)
 		{
 			Pzw[t][i] = (nzw[t][i]+ beta)/(nz_words[t] + vocabSize*beta);
 		}
-		Pz[t] = (nz_units[t]+alpha)/(numUnits+ N*alpha);
+		Pz[t] = (nz_units[t]+alpha)/(units.size() + N*alpha);
 	}
 
   ofstream F0;
@@ -190,7 +194,7 @@ void outputResult(string f0, string f1 , string f2)
   F2.open (f2);
   for (int t = 0; t < N; ++t)
 	{
-		F2 << Pzw[t][t];
+		F2 << Pzw[t][0];
 		for (int i = 1; i < vocabSize; ++i)
 		{
 			F2<<" "<<Pzw[t][i];
@@ -202,23 +206,6 @@ void outputResult(string f0, string f1 , string f2)
 }
 int main(int argc, char const *argv[])
 {
-
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::vector<int> v;
-    v.push_back(40);
-    v.push_back(10);
-    v.push_back(10);
-    v.push_back(40);
-    std::discrete_distribution<> d(v.begin(), v.end());
-    std::map<int, int> m;
-    for(int n=0; n<10000; ++n) {
-        ++m[d(gen)];
-    }
-    for(auto p : m) {
-        std::cout << p.first << " generated " << p.second << " times\n";
-    }
-	
 	char* filename = "train_processed_nodups.txt";
 	initAssign(filename);
 	for (int i = 0; i < numIter; ++i)
@@ -242,12 +229,6 @@ int main(int argc, char const *argv[])
 		}
 		cout<<endl<<endl;
 	}
-
 	outputResult("Evaluation/DMM_results/wordMap_40.txt","Evaluation/DMM_results/topic_priors_40.txt", "Evaluation/DMM_results/word_topic_probs_40.txt");
-
-
-
 	return 0;
 }
-//nwz = {}
-//nzw = {}
