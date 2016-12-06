@@ -9,7 +9,7 @@
 #include <random>
 
 using namespace std;
-int N = 8;
+int N = 40;
 double alpha = 50.0/N;
 double beta = 0.01;
 int numIter = 1000;
@@ -151,11 +151,58 @@ void gibbsIteration(){
 
 }
 
+
+void outputResult(string f0, string f1 , string f2)
+{
+	// Compute P(w|z) and P(z) and output to files
+	double** Pzw = new double*[N];
+	double* Pz = new double[N];
+
+	for (int t = 0; t < N; ++t)
+	{
+		Pzw[t] = new double[vocabSize];
+		for (int i = 0; i < vocabSize; ++i)
+		{
+			Pzw[t][i] = (nzw[t][i]+ beta)/(nz_words[t] + vocabSize*beta);
+		}
+		Pz[t] = (nz_units[t]+alpha)/(numUnits+ N*alpha);
+	}
+
+  ofstream F0;
+  F0.open (f0);
+  for (int i = 0; i < vocabSize; ++i)
+	{
+		F0<<i<<" "<<wordMapRev.find(i)->second<<endl;
+	}
+  F0.close();
+
+
+  ofstream F1;
+  F1.open (f1);
+  for (int t = 0; t < N; ++t)
+	{
+		F1<<Pz[t]<<endl;
+	}
+  F1.close();
+
+  ofstream F2;
+  F2.open (f2);
+  for (int t = 0; t < N; ++t)
+	{
+		F2 << Pzw[t][t];
+		for (int i = 1; i < vocabSize; ++i)
+		{
+			F2<<" "<<Pzw[t][i];
+		}
+		F2 << endl;
+	}
+  F2.close();
+
+}
 int main(int argc, char const *argv[])
 {
 
-
-  std::random_device rd;
+    std::random_device rd;
     std::mt19937 gen(rd());
     std::vector<int> v;
     v.push_back(40);
@@ -170,9 +217,9 @@ int main(int argc, char const *argv[])
     for(auto p : m) {
         std::cout << p.first << " generated " << p.second << " times\n";
     }
-    char* filename = "biterms.txt";
+    // char* filename = "biterms.txt";
 	
-	// char* filename = "train_docs_new.txt";
+	char* filename = "biterms.txt";
 	initAssign(filename);
 	for (int i = 0; i < numIter; ++i)
 	{
@@ -195,6 +242,8 @@ int main(int argc, char const *argv[])
 		}
 		cout<<endl<<endl;
 	}
+
+	outputResult("Evaluation/BTM_results/wordMap_40.txt","Evaluation/BTM_results/topic_priors_40.txt", "Evaluation/BTM_results/word_topic_probs_40.txt");
 
 
 
