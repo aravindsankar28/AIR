@@ -16,15 +16,13 @@ with open(name) as f:
 		wordListNew = []
 		for word in wordList:
 			word = word.lower()
-			if len(word) >3 and word not in stop:
+			if len(word) >3 and (word not in stop) and (word not in wordListNew):
 				wordListNew.append(word)
 		docs.append(wordListNew)
 		for w in wordListNew:
 			if w not in wordDocumentFrequency:
 				wordDocumentFrequency[w] = 0
 			wordDocumentFrequency[w] += 1
-		#print ' '.join(wordListNew)
-
 
 for d in docs:
 	wordListNew = []
