@@ -205,7 +205,7 @@ void outputResult(string f0, string f1 , string f2)
 }
 int main(int argc, char const *argv[])
 {
-	char* filename = "train_processed_nodups.txt";
+	char* filename = "docs_nodups.txt";
 	initAssign(filename);
 	for (int i = 0; i < numIter; ++i)
 	{

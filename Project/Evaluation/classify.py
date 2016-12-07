@@ -23,10 +23,12 @@ f0 = directory+"/wordMap_"+str(numTopics)+".txt"
 f1 = directory+"/topic_priors_"+str(numTopics)+".txt"
 f2 = directory+"/word_topic_probs_"+str(numTopics)+".txt"
 
-f3 = "../train_processed_new.txt"
-f4 = "../test_processed_new.txt"
-f5 = "../train_topics.txt"
-f6 = "../test_topics.txt"
+f3 = "../docs_nodups.txt"
+f4 = "../topics.txt"
+# f3 = "../train_processed_nodups.txt"
+# f4 = "../test_processed_nodups.txt"
+# f5 = "../train_topics.txt"
+# f6 = "../test_topics.txt"
 
 
 
@@ -77,32 +79,21 @@ def getBiterms(doc):
 # 		biterms = getBiterms[d]
 
  
-def classifySVM(X_train, Y_train, X_test, Y_test):
-	X_total =[]
-	Y_total = []
-	for x in X_train:
-		X_total.append(x)
-
-	for x in X_test:
-		X_total.append(x)
-	
-	for y in Y_train:
-		Y_total.append(y)
-
-	for y in Y_test:
-		Y_total.append(y)
+def classifySVM(X, Y):
+	X_total = X
+	Y_total = Y
 	X_total = normalize(X_total)
 	clf = SVC(kernel='linear', C=1)
 	z = cross_val_score(clf, X_total , Y_total, cv=5, scoring='accuracy')
 	t = np.array(z)
 	print np.mean(t)
-	X_train = normalize(X_train)
-	svc = LinearSVC(C=1).fit(X_train, Y_train)
+	# X_train = normalize(X_train)
+	# svc = LinearSVC(C=1).fit(X_train, Y_train)
 	# svc = SVC(kernel='linear',C=1).fit(X, y)
-	y_pred = svc.predict(X_train)
-	print "train accuracy",accuracy_score(Y_train, y_pred)
-	y_pred = svc.predict(normalize(X_test))
-	print "test accuracy",accuracy_score(Y_test, y_pred)
+	# y_pred = svc.predict(X_train)
+	# print "train accuracy",accuracy_score(Y_train, y_pred)
+	# y_pred = svc.predict(normalize(X_test))
+	# print "test accuracy",accuracy_score(Y_test, y_pred)
 
 # Compute NMI from clusters and labels based on BTM paper.
 def NMI(clusters, labels, n):
@@ -209,7 +200,7 @@ with open(f2) as f:
 
 topics = len(Pwz)
 
-# Now, read train docs and get P(z = k|d) for each doc - basically find the features for the document
+# Now, read docs and get P(z = k|d) for each doc - basically find the features for the document
 docs = []
 
 with open(f3) as f:
@@ -217,44 +208,30 @@ with open(f3) as f:
 	for doc in lines:
 		doc = doc.split()
 		docs.append(doc)
-test_docs = []
-
-with open(f4) as f:
-	lines = f.read().splitlines()
-	for doc in lines:
-		doc = doc.split()
-		test_docs.append(doc)
 
 
-#Pdz_train = naiveBayes(docs)
-#Pdz_test = naiveBayes(test_docs)
 
-Pdz_train = sumOverWords(docs)
-Pdz_test = sumOverWords(test_docs)
-# read train and test labels
-train_labels = []
+#Pdz = naiveBayes(docs)
+
+Pdz = sumOverWords(docs)
+
+# read labels
+labels = []
 labelMap = {} # From topic to label
 labelMapRev = {}
 count = 0
 
-with open(f5) as f:
+with open(f4) as f:
 	lines = f.read().splitlines()
 	for line in lines:
 		if line not in labelMap:
 			labelMap[line] = count
 			labelMapRev[count] = line
 			count += 1
-		train_labels.append(labelMap[line])
-
-test_labels = []
-with open(f6) as f:
-	lines = f.read().splitlines()
-	for line in lines:
-		test_labels.append(labelMap[line])
+		labels.append(labelMap[line])
 
 numLabels = len(labelMap)
 # Evaluate document classification and clustering.
-classifySVM(Pdz_train, train_labels, Pdz_test, test_labels)
-clusterNaive(Pdz_train, train_labels)
-
-clusterKMeans(Pdz_train,train_labels,numLabels)
+classifySVM(Pdz, labels)
+clusterNaive(Pdz, labels)
+clusterKMeans(Pdz,labels,numLabels)
