@@ -1,8 +1,9 @@
 import sys
 import re
 from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
 stop = set(stopwords.words('english'))
-
+lemmatizer = WordNetLemmatizer()
 wordDocumentFrequency = {}
 
 name = sys.argv[1]
@@ -17,6 +18,7 @@ with open(name) as f:
 		for word in wordList:
 			word = word.lower()
 			if len(word) >3 and (word not in stop) and (word not in wordListNew):
+				word = lemmatizer.lemmatize(word)
 				wordListNew.append(word)
 		docs.append(wordListNew)
 		for w in wordListNew:
