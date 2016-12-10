@@ -7,15 +7,16 @@
 #include <map>
 #include <queue>
 #include <random>
-
+// Example run : ./a.out DMM 20 Snippet
+// Example run : ./a.out DMM 20 TMN
 using namespace std;
 int N = 40;
 double alpha = 50.0/N;
 double beta = 0.01;
-int numIter = 1000;
+int numIter = 10;
 int vocabSize;
 int numUnits;
-
+char* inputFileName = "units.txt";
 map<string,int> wordMap;
 map<int,string> wordMapRev;
 set<string> vocab;
@@ -205,7 +206,51 @@ void outputResult(string f0, string f1 , string f2)
 }
 int main(int argc, char const *argv[])
 {
-	char* filename = "docs_nodups.txt";
+	// char* filename = "biterms_units.txt";
+	// char* filename = "tmn_biterms.txt";
+	// char* filename = "tmn_docs_nodups.txt";
+	// char* filename = "Biterms_nodups.txt";
+
+	// algo, numtopics, corpus.
+
+	char algo[20];
+	strcpy(algo, argv[1]);
+
+	
+
+	char numtopics[20];
+	strcpy(numtopics,argv[2]);
+
+	char corpus[20];
+	strcpy(corpus, argv[3]);
+
+
+	char filename[80];
+
+	strcpy(filename,"");
+	strcat(filename, corpus);
+	strcat(filename, "_Data/");
+	strcat(filename, algo);
+	strcat(filename, "_docs_nodups.txt");
+
+
+	char path[100];
+	strcpy(path,"Result_Files/");
+	strcat(path,algo);
+	strcat(path,"_");
+	strcat(path, numtopics);
+	strcat(path, "_");
+	strcat(path,corpus);
+	
+
+
+	// cout << filename<< endl;
+	// return 0;
+
+	N = atoi(numtopics);
+
+	// char* filename = "Gmm_new_units.txt";
+	// char* filename = "gmm_units_thresh_full.txt";
 	initAssign(filename);
 	for (int i = 0; i < numIter; ++i)
 	{
@@ -228,6 +273,30 @@ int main(int argc, char const *argv[])
 		}
 		cout<<endl<<endl;
 	}
-	outputResult("Evaluation/DMM_results/wordMap_40.txt","Evaluation/DMM_results/topic_priors_40.txt", "Evaluation/DMM_results/word_topic_probs_40.txt");
+
+
+	char f0[100];
+	strcpy(f0,path);
+	strcat(f0,"_wordMap.txt");
+
+
+	char f1[100];
+	strcpy(f1,path);
+	strcat(f1,"_topic_priors.txt");
+
+
+	char f2[100];
+	strcpy(f2,path);
+	strcat(f2,"_word_topic_probs.txt");
+	outputResult(f0, f1, f2);
+
+	// outputResult("Evaluation_units/BTM_results/wordMap_40.txt","Evaluation_units/BTM_results/topic_priors_40.txt", "Evaluation_units/BTM_results/word_topic_probs_40.txt");
+
+	// outputResult("Evaluation_TMN/BTM_results/wordMap_80.txt","Evaluation_TMN/BTM_results/topic_priors_80.txt", "Evaluation_TMN/BTM_results/word_topic_probs_80.txt");
+	// outputResult("Evaluation_TMN/DMM_results/wordMap_80.txt","Evaluation_TMN/DMM_results/topic_priors_80.txt", "Evaluation_TMN/DMM_results/word_topic_probs_80.txt");
+
+	// outputResult("Evaluation/BTM_results/wordMap_80.txt","Evaluation/BTM_results/topic_priors_80.txt", "Evaluation/BTM_results/word_topic_probs_80.txt");
+	// outputResult("Evaluation_units/DMM_results/wordMap_40.txt","Evaluation_units/DMM_results/topic_priors_40.txt", "Evaluation_units/DMM_results/word_topic_probs_40.txt");
+	// outputResult("Evaluation_units/GMM_results/wordMap_20.txt","Evaluation_units/GMM_results/topic_priors_20.txt", "Evaluation_units/GMM_results/word_topic_probs_20.txt");
 	return 0;
 }
