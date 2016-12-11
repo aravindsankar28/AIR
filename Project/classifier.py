@@ -121,15 +121,15 @@ def classifySVM(X, Y):
 def NMI(clusters, labels, n):
 	H_pred = 0.0
 	H_labels = 0.0
-	for i in range(0, len(clusters)):
+	for i in clusters:
 		H_pred += (len(clusters[i])*1.0) *math.log(len(clusters[i])*1.0/n, 2)
 	H_pred /= n
-	for j in range(0, len(labels)):
+	for j in labels:
 		H_labels += (len(labels[j])*1.0) *math.log(len(labels[j])*1.0/n, 2)
 	H_labels /= n
 	Inf = 0.0
-	for i in range(0, len(clusters)):
-		for j in range(0, len(labels)):
+	for i in clusters:
+		for j in labels:
 			intersection = len(set(clusters[i]) & set(labels[j]))
 			if intersection != 0:
 				Inf += intersection*math.log(1.0*len(clusters[i]) * len(labels[j])/(n*intersection),2)
@@ -191,7 +191,7 @@ def clusterNaive(X, Y):
 	labels = getGroupsFromAssignments(Y)
 	print len(clusters), len(labels)
 	# print "nmi metric naive clustering", normalized_mutual_info_score(np.array(Y), np.array(pred_labels))
-	print "purity for naive clustering ", clusterPurity(clusters, labels, len(pred_labels))
+	# print "purity for naive clustering ", clusterPurity(clusters, labels, len(pred_labels))
 	print "nmi for naive clustering ",NMI(clusters, labels, len(pred_labels))
 	
 
