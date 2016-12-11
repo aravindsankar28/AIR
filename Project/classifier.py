@@ -37,7 +37,7 @@ f2 = path+"_word_topic_probs.txt"
 # f1 = directory+"/topic_priors_"+str(numTopics)+".txt"
 # f2 = directory+"/word_topic_probs_"+str(numTopics)+".txt"
 
-f3 = corpus+"_Data/"+algo+"_docs_nodups.txt"
+f3 = corpus+"_Data/"+"DMM"+"_docs_nodups.txt"
 f4 = corpus+"_Data/topics.txt"
 # f3 = "../train_processed_nodups.txt"
 # f4 = "../test_processed_nodups.txt"
