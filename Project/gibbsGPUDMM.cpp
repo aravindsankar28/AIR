@@ -161,20 +161,13 @@ void initAssign(char* filename){
     }
 
     
-	for (int t = 0; t < N; ++t)
-		Pzw[t] = new double[vocabSize];		
-	
 	Pz = new double[N];
+	Pzw = new double*[N];
 	Pz_given_w = new double*[vocabSize];
 
 	for (int i = 0; i < vocabSize; ++i)
-	{
 		Pz_given_w[i] = new double[N];
-	}
-
-	Pzw = new double*[N];
-
-
+	
 	// P(w|z) and P(z)
 	for (int t = 0; t < N; ++t)
 	{
@@ -202,9 +195,6 @@ void initAssign(char* filename){
     	for (int t = 0; t < N; ++t)
     		Pz_given_w[i][t] /= sum;
     }
-
-
-
 }
 
 
@@ -316,7 +306,6 @@ void gibbsIteration(){
 			int w = unit[w_iter];
 			nwz[w][new_topic] += 1;
 			nzw[new_topic][w] += 1;
-
 			nwz_copy[w][new_topic] += 1;
 			nzw_copy[new_topic][w] += 1;
 		}
