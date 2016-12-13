@@ -31,7 +31,6 @@ int *nz_words; //
 int **nwz; // number of times word w assigned to topic z
 int **nzw; // number of times topic z is assignment to word w.
 
-int **Sdw;
 
  double** Pzw = new double*[N]; // P(w|z) for all z.
  double* Pz = new double[N]; // P(z)
@@ -252,11 +251,15 @@ void gibbsIteration(){
 		nz_units[current_topic] -= 1;
 		
 		nz_words[current_topic] -= unit.size();
+		nz_words_copy[current_topic] -= unit.size();
+
 		for (int w_iter = 0; w_iter < unit.size(); ++w_iter)
 		{
 			int w = unit[w_iter];
 			nwz[w][current_topic] -= 1;
 			nzw[current_topic][w] -= 1;
+			nwz_copy[w][current_topic] -= 1;
+			nzw_copy[current_topic][w] -=1;
 		}
 		//Must subtract current assignments before assigning new topic
 		for (int t = 0; t < N; ++t)
