@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  14 DEC 2016 22:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  14 DEC 2016 23:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -431,9 +431,6 @@ cmsy/m/n/9 ^^X  \OML/cmm/m/it/9 Dirichlet\OT1/cmr/m/n/9 (\OML/cmm/m/it/9 ^^L\OT
  []
 
 
-LaTeX Warning: Reference `utm' on page \thepage  undefined on input line 286.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 296--298
 
  []
@@ -444,105 +441,96 @@ Underfull \hbox (badness 10000) in paragraph at lines 303--307
  []
 
 [4 <./utm.png (PNG copy)>]
-Overfull \hbox (6.66734pt too wide) in paragraph at lines 324--326
+Overfull \hbox (6.66734pt too wide) in paragraph at lines 326--328
 []\T1/aer/m/n/9 The pre-vi-ous par-tion-ing met-ric is purely based the word2ve
 c
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 324--326
+Underfull \hbox (badness 10000) in paragraph at lines 326--328
 
  []
 
 [5]
-Overfull \hbox (2.24875pt too wide) in paragraph at lines 363--364
+Overfull \hbox (2.24875pt too wide) in paragraph at lines 365--366
 []\T1/aer/m/n/9 We im-ple-ment Gibbs Sam-pling in-fer-enc-ing al-go-rithms with
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 368--375
+Underfull \hbox (badness 10000) in paragraph at lines 370--376
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 384--387
-
- []
-
-[6] <images/Class_snip.pdf, id=100, 362.35374pt x 217.81375pt>
+<images/Class_snip.pdf, id=97, 362.35374pt x 217.81375pt>
 File: images/Class_snip.pdf Graphic file (type pdf)
 
 <use images/Class_snip.pdf>
-Package pdftex.def Info: images/Class_snip.pdf used on input line 405.
+Package pdftex.def Info: images/Class_snip.pdf used on input line 386.
 (pdftex.def)             Requested size: 216.81pt x 130.32698pt.
 
-<images/Class_TMN.pdf, id=101, 362.35374pt x 217.81375pt>
+<images/Class_TMN.pdf, id=98, 362.35374pt x 217.81375pt>
 File: images/Class_TMN.pdf Graphic file (type pdf)
 
 <use images/Class_TMN.pdf>
-Package pdftex.def Info: images/Class_TMN.pdf used on input line 408.
+Package pdftex.def Info: images/Class_TMN.pdf used on input line 389.
 (pdftex.def)             Requested size: 216.81pt x 130.32698pt.
 
-<images/Clus_Snip.pdf, id=102, 362.35374pt x 217.81375pt>
+<images/Clus_Snip.pdf, id=99, 362.35374pt x 217.81375pt>
 File: images/Clus_Snip.pdf Graphic file (type pdf)
 
 <use images/Clus_Snip.pdf>
-Package pdftex.def Info: images/Clus_Snip.pdf used on input line 422.
+Package pdftex.def Info: images/Clus_Snip.pdf used on input line 397.
 (pdftex.def)             Requested size: 216.81pt x 130.32698pt.
 
-<images/Clus_TMN.pdf, id=103, 362.35374pt x 217.81375pt>
+<images/Clus_TMN.pdf, id=100, 362.35374pt x 217.81375pt>
 File: images/Clus_TMN.pdf Graphic file (type pdf)
 
 <use images/Clus_TMN.pdf>
-Package pdftex.def Info: images/Clus_TMN.pdf used on input line 425.
+Package pdftex.def Info: images/Clus_TMN.pdf used on input line 400.
 (pdftex.def)             Requested size: 216.81pt x 130.32698pt.
-
-<images/TC_Snip.pdf, id=104, 362.35374pt x 217.81375pt>
+ [6]
+<images/TC_Snip.pdf, id=105, 362.35374pt x 217.81375pt>
 File: images/TC_Snip.pdf Graphic file (type pdf)
 
 <use images/TC_Snip.pdf>
-Package pdftex.def Info: images/TC_Snip.pdf used on input line 432.
+Package pdftex.def Info: images/TC_Snip.pdf used on input line 438.
 (pdftex.def)             Requested size: 216.81pt x 130.32698pt.
 
-<images/TC_TMN.pdf, id=105, 362.35374pt x 217.81375pt>
+<images/TC_TMN.pdf, id=106, 362.35374pt x 217.81375pt>
 File: images/TC_TMN.pdf Graphic file (type pdf)
  <use images/TC_TMN.pdf>
-Package pdftex.def Info: images/TC_TMN.pdf used on input line 435.
+Package pdftex.def Info: images/TC_TMN.pdf used on input line 441.
 (pdftex.def)             Requested size: 216.81pt x 130.32698pt.
 
-<images/Time_Snip.pdf, id=106, 362.35374pt x 217.81375pt>
+<images/Time_Snip.pdf, id=107, 362.35374pt x 217.81375pt>
 File: images/Time_Snip.pdf Graphic file (type pdf)
 
 <use images/Time_Snip.pdf>
-Package pdftex.def Info: images/Time_Snip.pdf used on input line 442.
+Package pdftex.def Info: images/Time_Snip.pdf used on input line 450.
 (pdftex.def)             Requested size: 216.81pt x 130.32698pt.
 
-<images/Time_TMN.pdf, id=107, 362.35374pt x 217.81375pt>
+<images/Time_TMN.pdf, id=108, 362.35374pt x 217.81375pt>
 File: images/Time_TMN.pdf Graphic file (type pdf)
 
 <use images/Time_TMN.pdf>
-Package pdftex.def Info: images/Time_TMN.pdf used on input line 445.
+Package pdftex.def Info: images/Time_TMN.pdf used on input line 453.
 (pdftex.def)             Requested size: 216.81pt x 130.32698pt.
  (./main.bbl [7 <./images/Class_snip.pdf> <./images/Class_TMN.pdf> <./images/Cl
 us_Snip.pdf> <./images/Clus_TMN.pdf>]
-
-LaTeX Warning: Text page \thepage  contains only floats.
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 ) [8 <./images/TC_Snip.pdf> <./images/TC_TMN.pdf> <./images/Time_Snip.pdf> <./i
 mages/Time_TMN.pdf>] (./main.aux)
-
-LaTeX Warning: There were undefined references.
-
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 3466 strings out of 493014
- 45413 string characters out of 6133351
+ 3465 strings out of 493014
+ 45408 string characters out of 6133351
  120905 words of memory out of 5000000
- 6879 multiletter control sequences out of 15000+600000
+ 6878 multiletter control sequences out of 15000+600000
  59237 words of font info for 83 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  41i,10n,36p,1335b,466s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -566,7 +554,7 @@ s/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1
 /urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times
 /utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.p
 fb>
-Output written on main.pdf (8 pages, 417777 bytes).
+Output written on main.pdf (8 pages, 419346 bytes).
 PDF statistics:
  297 PDF objects out of 1000 (max. 8388607)
  214 compressed objects within 3 object streams

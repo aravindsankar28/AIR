@@ -277,22 +277,22 @@ In this section we define out topic model, UTM. UTM requires input in the form o
 The UTM models assumes that topic proportions and topic word distributions are drawn from a dirichlet prior, similar to LDA. However since each unit is assumed to be drawn from a single topic, there is a single global topic proportion. All the words in a unit are drawn from the same topic, according to the dirichlet multinomial topic word distribution. The generative process is as follows:
 \begin{itemize}
 \item Sample a global topic proportion $\theta \; \sim \; Dirichlet(\alpha)$
-\item For each topic k $\in {1, ... ,K}:$ \begin{itemize} \item[] Draw a topic-word distribution $\phi_{k} \; \sim \; Dirichlet(\beta)$\end{itemize}
+\item For each topic $k \in \left\lbrace 1, ... ,K \right\rbrace$:  \begin{itemize} \item[] Draw a topic-word distribution $\phi_{k} \; \sim \; Dirichlet(\beta)$\end{itemize}
 \item For each unit $U_{i} \in U$\begin{itemize}
 \item[a] Sample a topic $z_{i} \; \sim \; Multinomial(\theta)$ 
 \item[b] For each word w $\in U_{i}$: \begin{itemize} \item[] Sample w $\sim \; Multinomial(\phi_{z_{i}})$\end{itemize}
 \end{itemize}
 \end{itemize}
-\ref{utm} illustrates the above process. Inferencing is carried out via Gibbs sampling. Details are provided in the Experiments section.
+\ref{UTM} illustrates the above process. Inferencing is carried out via Gibbs sampling. Details are provided in the Experiments section.
 %ACKNOWLEDGMENTS are optional
 \subsection{Inference by Gibbs Sampling}
 In this section, we define the procedure to obtain parameters $\phi$ and $\theta$ in UTM. Similar to LDA, exact inferencing of topics and topic proportion is computationally intractable. Thus it is necessary to apply an approximate inferencing algorithm. Gibbs sampling is a widely used MCMC algorithm, which has the advantages of asymptotically approaching the correct distribution as the number of iterations performed is increased, and can be memory efficient since it only needs to store the current states of units, and the word-topic assignment counts. In our system, we condition the topic distribution for a single unit, based on the current states of all other units, and sample a new topic assignment from the corresponding conditional distribution.
 \\[10pt]
 We begin by choosing initial states randomly for all units, and subsequently calculate the conditional distribution given by $$P(z | z_{\neg U _{i}}, U, \alpha, \beta)$$  where U is the pre defined set of all units in our short text corpus, $z_{\neg U_{i}}$ is the set of topic assignments for all the remaining units except the $i^{th}$ unit for which a topic assignment is currently being sampled and $\alpha$ and $\beta$ are the topic proportion and word-topic distribution priors, respectively. This can be given by:
-\[ P(z=k \mid z_{-u} , U, \alpha, \beta) = \frac{n_{k, \neg d} + \alpha}{U-1 + K \alpha} \times \frac{\prod\limits_{w \in u} n^w_{k, \neg d} + \beta }{\prod\limits_{w \in u} n_{k, \neg d} + V \beta} \]
+\[ P(z=k \mid z_{-u} , U, \alpha, \beta) = \frac{n_{k, \neg u} + \alpha}{U-1 + K \alpha} \times \frac{\prod\limits_{w \in u} n^w_{k, \neg u} + \beta }{\prod\limits_{w \in u} n_{k, \neg u} + V \beta} \]
 \begin{align*}
-& n^w_{k, \neg d} : \text{Number of times word w is assigned to topic k} \\
-& n_{k, \neg d} : \text{Number of units assigned to topic k} \\
+& n^w_{k, \neg u} : \text{Number of times word w is assigned to topic k} \\
+& n_{k, \neg } : \text{Number of units assigned to topic k} \\
 \end{align*}
 Intuitively this is fairly easy to interpret. The first term in the probability computation counts the number of units assigned to the current topic, smoothed by the dirichlet prior $\alpha$. The second term is a product over the probabilities of each word in this unit being assigned to topic z, smoothed by dirichlet prior $\beta$. Similarly we update the word-topic distribution and topic probabilities: \\
 $$\phi_{z}(w) = \frac{n^w_{k} + \beta}{\sum_{w}{n^w_k} + M\beta}$$
@@ -300,18 +300,20 @@ $$\theta_{z} = \frac{n_{z} + \alpha}{U-1 + K\alpha}$$
 For the sake of brevity, we omit the detailed derivation of this sampler.
 
 \subsection{Semantic Enrichment/Expansion of Short Texts}
-Given a short text $S_{i}$ = ${w_{1},w_{2} ... w_{|S_{i}|}}$, our goal is to discover a partition U = ${U_{1}, U_{2} ... U_{u(S_{i})}}$ of $S_{i}$ such that $$\cup_{u=1}^{u(S_{i})}U_{u} = \mathbf{S_{i}}$$ where $u(S_{i})$ is the total number of semantically diverse units chosen for the $i^{th}$  short text and, $$\mathbf{S_{i}} = S_{i} \cup E(S_{i})$$ where $E(S_{i})$ is a set of related words that is appended to $S_{i}$ based on co-occurrence knowledge (distributional semantic information). The addition of $E_{i}$ enriches the content of $S_{i}$ and helps obtain better units upon partitioning it.
+Given a short text $S_{i}$ = $\left\lbrace w_{1},w_{2} ... w_{|S_{i}|} \right\rbrace$, our goal is to discover a partition U = ${U_{1}, U_{2} ... U_{u(S_{i})}}$ of $S_{i}$ such that $$\cup_{u=1}^{u(S_{i})}U_{u} = \mathbf{S_{i}}$$ where $u(S_{i})$ is the total number of semantically diverse units chosen for the $i^{th}$  short text and, $$\mathbf{S_{i}} = S_{i} \cup E(S_{i})$$ where $E(S_{i})$ is a set of related words that is appended to $S_{i}$ based on co-occurrence knowledge (distributional semantic information). The addition of $E_{i}$ enriches the content of $S_{i}$ and helps obtain better units upon partitioning it.
 \\
 \\
-There are 2 sources of distributional semantics that we apply to split our short texts and to discover closely related words that can be appended to our text to produce better units and deal with sparsity. The first source is the set of pre-trained 300 dimensional word2vec embeddings. Since this is trained on a very vast external corpus, we call this our global co-occurrence information.\\ On the other hand, there is information hnidden in the current corpus of short texts that we are working with. This local co-occurrence information can be captured by running a coarse DMM (low topic count) model on the corpus which involves minimal computation. This returns us a word-topic vector for every word in the corpus (we denote this vector as $v_{cDMM}(w_{j}) = \{p_{cDMM}(z|w_{j}), z \in \{1 ... K\}\}$). This also helps us deal with words that are not present in our embeddings vocabulary.
+There are 2 sources of distributional semantics that we apply to split our short texts and to discover closely related words that can be appended to our text to produce better units and deal with sparsity. The first source is the set of pre-trained 300 dimensional word2vec embeddings. Since this is trained on a very vast external corpus, we use this to capture global co-occurrence information.\\ On the other hand, there is information hidden in the current corpus of short texts that we are working with. This local co-occurrence information can be captured by running a coarse DMM (low topic count) model on the corpus which involves minimal computation. This returns us a topic vector for every word in the corpus. We denote this vector as:
+$$v_{cDMM}(w_{j}) = \{p_{cDMM}(z|w_{j}), z \in \{1 ... K\}\}$$
+This also helps us deal with words that are not present in our embeddings vocabulary.
 \subsubsection{Word Promotion}
-In order to deal with sparsity problems and form coherent unit partitions, we extend our input short texts using semantically related words that can enhance the dominant semantic theme of a short text. We do this by choosing a set of words within each short text, that are 'promoted'. Promotion here refers to the process of increasing their semantic influence by adding words that are closely related to these promoted words in the embedding space, to the short text. The process of deciding which words to promote is based on the cDMM vectors that we mentioned earlier. The cDMM vectors let us know how likely it is that a specific word is aligned to the overall semantic theme of this short text. The higher the alignment, the more likely it is that we promote this word.\\
-We model the topical alignment of a short text S as follows:
+In order to deal with sparsity problems and form coherent unit partitions, we extend our input short texts using semantically related words that can enhance the dominant semantic theme of a short text. We do this by choosing a set of words within each short text, that are then \emph{promoted}. Promotion here refers to the process of increasing their semantic influence by adding words that are closely related to these promoted words in the embedding space, to the short text. The process of deciding which words to promote is based on the cDMM vectors that we mentioned earlier. The cDMM vectors let us know how likely it is that a specific word is aligned to the overall semantic theme of this short text. The higher the alignment, the more likely it is that we promote this word.\\
+We model the topical alignment of a short text S as:
 $$P(z=k|S) \propto P(z=k)\times \pi_{i=1}^{N_S} P(w_{i}|z=k)$$
-where S is the short text in consideration, and $P(w|k)$ and $P(z=k)$ are obtained from the counts in the final iteration of training of cDMM on the corpus. The above probability is based on the Sum over Words (SW) formulation which is frequently applied in the context of short text classification \cite{btm}. \\
-Similarly word alignment information is available in the form of $P(z=k|w)$ which can also be inferred from the assignments in the final iteration of cDMM training. Thus we obtain K-dimensional topical alignment vectors for the short text as well as it's words (we denote them as $A_{S}$ and $A_{w}, w \in S$ respectively. We then measure the likelihood that the word w is part of the semantic theme of short text S in terms of the similarity of their alignment vectors. The higher the similarity the more likely it is that we promote word w by adding it's closest semantic neighbors in the embedding space.
+where $S$ is the short text in consideration, and $P(w|k)$ and $P(z=k)$ are obtained from the counts in the final iteration of training of cDMM on the corpus. The above probability is based on the Sum over Words (SW) formulation which is frequently applied in the context of short text classification \cite{btm}. \\
+Similarly word alignment information is available in the form of $P(z=k|w)$ which can also be inferred from the assignments in the final iteration of cDMM training. Thus we obtain K-dimensional topical alignment vectors for the short text as well as it's words (we denote them as $A_{S}$ and $A_{w}, w \in S$ respectively). We then measure the likelihood that the word $w$ is part of the semantic theme of short text $S$ in terms of the similarity of their alignment vectors. The higher the similarity the more likely it is that we promote word $w$ by adding it's closest semantic neighbors in the embedding space.
 $$P(\text{w is promoted}) \propto Similarity(A_{S}, A_{w})$$
-In our experiments we use the cosine similarity function in the above equation. A coin loaded with the above probability is then flipped to decide if a word in S is promoted or not.
+In our experiments,  we use the cosine similarity function in the above equation. A coin loaded with the above probability is then flipped to decide if a word in $S$ is promoted or not.
 \subsubsection{Semantic Expansion}
 For every word that is chosen to be promoted a maximum of 5 words are added to the short text. A threshold value $\tau$ is set to the cosine similarity values, based on inspection of several common words and all their related words in the embedding space. An exception to this is when words have too many related words. For instance, names of countries often link to other countries' names with a very high cosine similarity. However this does not make them strongly semantically related. We do not promote any such words, which have a very high number of words crossing the threshold value. The expansion set E is thus constructed as follows:
 $$E(S_{i}) = \{w; w \notin S_{i}, \exists w'\in S_{i}\; s.t \; sim(w, w') > \tau\}$$
@@ -368,8 +370,7 @@ We evaluate performance on 3 common tasks in the context of short text topic mod
 The results of our inferencing process provide us a topical alignment or topic distribution vector $p(z|S)$ for every short text in our corpus. Hence, an indirect assessment of the quality of topics and assignments of texts to topics, can be measured as the accuracy of a classifier that relies on the $\{p(z|S)\}$ vector to perform classification. We employ a Support Vector Machine (SVM) with linear kernel settings, and default parameters in the python sklearn package, and the accuracy of classification is determined via 5 fold cross validation on both datasets.
 \\
 \\
-Since all the models considered here assume single topics for short documents (units), it could be inappropriate to esimate topical distributions for classification merely based on the final topic assignments \cite{gpudmm, btm}. The post inference probabilities $p(z|d)$ is generally inferred in two different ways:
-\\
+Since all the models considered here assume single topics for short documents (units), it could be inappropriate to esimate topical distributions for classification merely based on the final topic assignments \cite{gpudmm, btm}. The post inference probabilities $p(z|d)$ is generally inferred in two different ways:\\[4pt]
 \textbf{Naive Bayes (NB) Rule:}
 Each word appearence is independently assumed to be drawn from the topic assigned to a unit. Hence:
 $$p(z=k |S) \propto p(z=k)/;\pi_{i=1}^{N_{S}}p(w_{i}|z=k)$$
@@ -378,12 +379,33 @@ $$p(z=k |S) \propto p(z=k)/;\pi_{i=1}^{N_{S}}p(w_{i}|z=k)$$
 Every word in the vocabulary is used to establish the likelihood of a topic given a document using chain rule.
 $$p(z=k |S) \propto \sum_{w}p(z=k|w)p(w|d)$$
 Although there is no study thoroughly evaluating the relative performance of the NB and SW methods for classification, \cite{satm} shows the SW approach to largely improve classification results with DMM and LDA based topics. All of our experimental results employ SW based classification.
+\begin{figure*}[t]
+    \centering
+    \subfigure[]{
+\label{fig:Classi performance}
+\includegraphics[width=3in]{images/Class_snip.pdf}}
+\subfigure[]{
+\label{fig:Classitmn performance}
+\includegraphics[width=3in]{images/Class_TMN.pdf}}
+    \caption{Classification Performance}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \subfigure[]{
+\label{fig:Clus performance}
+\includegraphics[width=3in]{images/Clus_Snip.pdf}}
+\subfigure[]{
+\label{fig:Clustmn performance}
+\includegraphics[width=3in]{images/Clus_TMN.pdf}}
+    \caption{Clustering Performance (NMI)}
+\end{figure*}
+
 
 \subsubsection{Short Text Clustering} 
 There are two simple ways to cluster text based on the inferencing results that we obtain. The first it to assign each short text S to the z which maximizes probabability of assignment:
 $$z_{S} = argmax_{z \in \{1, ... ,K\}}p(z|S)$$
-This produces between 1 and K clusters, where K is the total number of topics. An alternate assignment strategy is to run K-means on the $\bar{p(z|S)}$ vectors. We leave this for future work, and currently perform clustering using the max assignment. Our clusters are evaluated using the NMI (Normalized Mutual Information) metric.
-\\
+This produces between 1 and K clusters, where K is the total number of topics. An alternate assignment strategy is to run K-means on the $\bar{p(z|S)}$ vectors. We leave this for future work, and currently perform clustering using the max assignment. Our clusters are evaluated using the NMI (Normalized Mutual Information) metric. Let $\Omega = \left\lbrace \omega_1, ..., \omega_K \right\rbrace$ be the set of output clusters and $C = \left\lbrace c_1, ..., c_P \right\rbrace$ be $P$ labeled classes of the documents. We define the NMI metric as :
 
 \begin{align*}
 NMI(\Omega, \mathbb{C)} &= \frac{I(\Omega ; \mathbb{C})}{\left[ H(\Omega) + H (\mathbb{C} \right] /2} \\[5pt]
@@ -398,16 +420,8 @@ Thus given the set of K topics, we choose the top T words for each topic, ranked
 $$Topic \;Coherence = \frac{1}{K \times ^{T}C_{2}}\sum_{k}\sum_{1 \leq i < j \leq T}sim(w_{i}, w_{j})$$
 
 \subsubsection{Results and Interpretation}
-\begin{figure}[t!]
-    \centering
-    \subfigure[]{
-\label{fig:Classi performance}
-\includegraphics[width=3in]{images/Class_snip.pdf}}
-\subfigure[]{
-\label{fig:Classitmn performance}
-\includegraphics[width=3in]{images/Class_TMN.pdf}}
-    \caption{Classification Performance}
-\end{figure}
+
+
 Figure 3 reports classification performance of BTM, DMM and our 2 methods on both the datasets. BTM outperforms other methods by a significant margin. UTM K-mean and UTM K-med perform similar to DMM, although UTM K-Mean does marginally better.
 \\[5pt]
 Figure 4 reports clustering performance measured by NMI, for the same set of methods. UTM K-Mean and BTM outperform DMM by a significant margin.
@@ -415,17 +429,9 @@ Figure 4 reports clustering performance measured by NMI, for the same set of met
 Figure 5 reports topic coherence in our methods vs DMM and BTM. Our methods can be seen to be atleast comparable or better than BTM in this metric. A possible reason for this, is that BTM overfits to the dataset that it is trained on. This causes it to perform very well on the classification and clustering tasks, but not as well on topic coherence evaluated against an external source. 
 \\[5pt]
 Figure 6 reports the runtime per iteration of all 4 algorithms. Our runtimes can be seen to be comparable with DMM. BTM on the other hand is significantly slower and scales poorly as the number of topics or the size of the corpus is increased. This causes BTM to be computationally infeasible for most real world applications involving millions of text snippets. 
-\begin{figure}[t!]
-    \centering
-    \subfigure[]{
-\label{fig:Clus performance}
-\includegraphics[width=3in]{images/Clus_Snip.pdf}}
-\subfigure[]{
-\label{fig:Clustmn performance}
-\includegraphics[width=3in]{images/Clus_TMN.pdf}}
-    \caption{Clustering Performance (NMI)}
-\end{figure}
-\begin{figure}[t!]
+
+
+\begin{figure*}[t!]
     \centering
     \subfigure[]{
 \label{fig:TC performance}
@@ -434,8 +440,10 @@ Figure 6 reports the runtime per iteration of all 4 algorithms. Our runtimes can
 \label{fig:TCtmn performance}
 \includegraphics[width=3in]{images/TC_TMN.pdf}}
     \caption{Topic Coherence}
-\end{figure}
-\begin{figure}[t!]
+\end{figure*}
+
+
+\begin{figure*}[t!]
     \centering
     \subfigure[]{
 \label{fig:TC performance}
@@ -444,7 +452,12 @@ Figure 6 reports the runtime per iteration of all 4 algorithms. Our runtimes can
 \label{fig:TCtmn performance}
 \includegraphics[width=3in]{images/Time_TMN.pdf}}
     \caption{Runtime per Gibbs iteration}
-\end{figure}
+\end{figure*}
+
+\section{Conclusion}
+From our experiments, we observe that the topic coherence of our unit topic model is much higher in comparison to DMM, which demonstrates the scope for modeling semantically related units occurring in a short text, as belonging to the same topic. 
+However, our model is much faster than the best performing BTM algorithm. 
+The relatively poor performance of our model (in comparison to BTM) in the classification and clustering tasks is very likely due to static definition of units and the use of K-means (or K-medoids) clustering algorithm for unit selection. The integration of unit selection into the generative process could prove to be very effective in improving the performance of our model and will make it much more principled at a conceptual level. We intend to pursue this line of research in the near future.   
 %
 % The following two commands are all you need in the
 % initial runs of your .tex file to
