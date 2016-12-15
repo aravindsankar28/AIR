@@ -46,7 +46,7 @@
 % For tracking purposes - this is V2.0 - May 2012
 
 \documentclass{sig-alternate-05-2015}
-
+\usepackage{subfigure}
 
 \begin{document}
 
@@ -67,26 +67,19 @@
 \isbn{123-4567-24-567/08/06}
 
 %Conference
-\conferenceinfo{PLDI '13}{June 16--19, 2013, Seattle, WA, USA}
 
 \acmPrice{\$15.00}
 
 %
 % --- Author Metadata here ---
-\conferenceinfo{WOODSTOCK}{'97 El Paso, Texas USA}
+
 %\CopyrightYear{2007} % Allows default copyright year (20XX) to be over-ridden - IF NEED BE.
 %\crdata{0-12345-67-8/90/01}  % Allows default copyright data (0-89791-88-6/97/05) to be over-ridden - IF NEED BE.
 % --- End of Author Metadata ---
 
-\title{Alternate {\ttlit ACM} SIG Proceedings Paper in LaTeX
-Format\titlenote{(Produces the permission block, and
-copyright information). For use with
-SIG-ALTERNATE.CLS. Supported by ACM.}}
-\subtitle{[Extended Abstract]
-\titlenote{A full version of this paper is available as
-\textit{Author's Guide to Preparing ACM SIG Proceedings Using
-\LaTeX$2_\epsilon$\ and BibTeX} at
-\texttt{www.acm.org/eaddress.htm}}}
+\title{Final Project Report - Topic modelling for short texts using Word Embeddings
+}
+
 %
 % You need the command \numberofauthors to handle the 'placement
 % and alignment' of the authors beneath the title.
@@ -112,7 +105,7 @@ SIG-ALTERNATE.CLS. Supported by ACM.}}
 % without further effort on your part as the last section in
 % the body of your article BEFORE References or any Appendices.
 
-\numberofauthors{8} %  in this sample file, there are a *total*
+\numberofauthors{2} %  in this sample file, there are a *total*
 % of EIGHT authors. SIX appear on the 'first-page' (for formatting
 % reasons) and the remaining two appear in the \additionalauthors section.
 %
@@ -129,120 +122,66 @@ SIG-ALTERNATE.CLS. Supported by ACM.}}
 %
 % 1st. author
 \alignauthor
-Ben Trovato\titlenote{Dr.~Trovato insisted his name be first.}\\
-       \affaddr{Institute for Clarity in Documentation}\\
-       \affaddr{1932 Wallamaloo Lane}\\
-       \affaddr{Wallamaloo, New Zealand}\\
-       \email{trovato@corporation.com}
+Adit Krishnan\\
+       \affaddr{Dept of CS, UIUC}\\
+       \affaddr{Urbana, Illinois}\\
+       \email{aditk2@illinois.edu}
 % 2nd. author
 \alignauthor
-G.K.M. Tobin\titlenote{The secretary disavows
-any knowledge of this author's actions.}\\
-       \affaddr{Institute for Clarity in Documentation}\\
-       \affaddr{P.O. Box 1212}\\
-       \affaddr{Dublin, Ohio 43017-6221}\\
-       \email{webmaster@marysville-ohio.com}
-% 3rd. author
-\alignauthor Lars Th{\o}rv{\"a}ld\titlenote{This author is the
-one who did all the really hard work.}\\
-       \affaddr{The Th{\o}rv{\"a}ld Group}\\
-       \affaddr{1 Th{\o}rv{\"a}ld Circle}\\
-       \affaddr{Hekla, Iceland}\\
-       \email{larst@affiliation.org}
-\and  % use '\and' if you need 'another row' of author names
-% 4th. author
-\alignauthor Lawrence P. Leipuner\\
-       \affaddr{Brookhaven Laboratories}\\
-       \affaddr{Brookhaven National Lab}\\
-       \affaddr{P.O. Box 5000}\\
-       \email{lleipuner@researchlabs.org}
-% 5th. author
-\alignauthor Sean Fogarty\\
-       \affaddr{NASA Ames Research Center}\\
-       \affaddr{Moffett Field}\\
-       \affaddr{California 94035}\\
-       \email{fogartys@amesres.org}
-% 6th. author
-\alignauthor Charles Palmer\\
-       \affaddr{Palmer Research Laboratories}\\
-       \affaddr{8600 Datapoint Drive}\\
-       \affaddr{San Antonio, Texas 78229}\\
-       \email{cpalmer@prl.com}
+Aravind Sankar\\
+       \affaddr{Dept of CS, UIUC}\\
+       \affaddr{Urbana, Illinois}\\
+       \email{asankar3@illinois.edu}
+%% 3rd. author
+%\alignauthor Lars Th{\o}rv{\"a}ld\titlenote{This author is the
+%one who did all the really hard work.}\\
+%       \affaddr{The Th{\o}rv{\"a}ld Group}\\
+%       \affaddr{1 Th{\o}rv{\"a}ld Circle}\\
+%       \affaddr{Hekla, Iceland}\\
+%       \email{larst@affiliation.org}
+%\and  % use '\and' if you need 'another row' of author names
+%% 4th. author
+%\alignauthor Lawrence P. Leipuner\\
+%       \affaddr{Brookhaven Laboratories}\\
+%       \affaddr{Brookhaven National Lab}\\
+%       \affaddr{P.O. Box 5000}\\
+%       \email{lleipuner@researchlabs.org}
+%% 5th. author
+%\alignauthor Sean Fogarty\\
+%       \affaddr{NASA Ames Research Center}\\
+%       \affaddr{Moffett Field}\\
+%       \affaddr{California 94035}\\
+%       \email{fogartys@amesres.org}
+%% 6th. author
+%\alignauthor Charles Palmer\\
+%       \affaddr{Palmer Research Laboratories}\\
+%       \affaddr{8600 Datapoint Drive}\\
+%       \affaddr{San Antonio, Texas 78229}\\
+%       \email{cpalmer@prl.com}
 }
 % There's nothing stopping you putting the seventh, eighth, etc.
 % author on the opening page (as the 'third row') but we ask,
 % for aesthetic reasons that you place these 'additional authors'
 % in the \additional authors block, viz.
-\additionalauthors{Additional authors: John Smith (The Th{\o}rv{\"a}ld Group,
-email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
-(The Kumquat Consortium, email: {\texttt{jpkumquat@consortium.net}}).}
-\date{30 July 1999}
+%\additionalauthors{Additional authors: John Smith (The Th{\o}rv{\"a}ld Group,
+%email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
+%(The Kumquat Consortium, email: {\texttt{jpkumquat@consortium.net}}).}
+%\date{30 July 1999}
 % Just remember to make sure that the TOTAL number of authors
 % is the number that will appear on the first page PLUS the
 % number that will appear in the \additionalauthors section.
 
 \maketitle
 \begin{abstract}
-This paper provides a sample of a \LaTeX\ document which conforms,
-somewhat loosely, to the formatting guidelines for
-ACM SIG Proceedings. It is an {\em alternate} style which produces
-a {\em tighter-looking} paper and was designed in response to
-concerns expressed, by authors, over page-budgets.
-It complements the document \textit{Author's (Alternate) Guide to
-Preparing ACM SIG Proceedings Using \LaTeX$2_\epsilon$\ and Bib\TeX}.
-This source file has been written with the intention of being
-compiled under \LaTeX$2_\epsilon$\ and BibTeX.
-
-The developers have tried to include every imaginable sort
-of ``bells and whistles", such as a subtitle, footnotes on
-title, subtitle and authors, as well as in the text, and
-every optional component (e.g. Acknowledgments, Additional
-Authors, Appendices), not to mention examples of
-equations, theorems, tables and figures.
-
-To make best use of this sample document, run it through \LaTeX\
-and BibTeX, and compare this source code with the printed
-output produced by the dvi file. A compiled PDF version
-is available on the web page to help you with the
-`look and feel'.
+In many tasks involving short texts such as opinion mining or recommendation and search on social networks, it is necessary to interpret text semantically. Inferring coherent discriminative topics that appear in these texts is fundamental to this task. However, conventional probabilistic topic models such as \cite{plsa} or \cite{lda} perform poorly on collections of short texts, owing to several factors including the lack of context words, sparsity in word frequencies and co-occurrence counts, uncommon word usage (e.g. tweets/news titles), ill-formed sentences (e.g. search snippets) and topic mixture assumptions. Most short texts tend to focus on a single topic, often a large proportion of their content is related to a single semantic theme. It is thus necessary to build robust topic models that can account for the above factors. Additionally several applications require faster topic inferencing and scalability. Thus striking a balance between performance and training times is crucial.
+\\[5pt]
+In this report we study recent short text topic models and propose a unit topic model (UTM) exploiting pre-trained word embeddings, which attempts to address a few prominent shortcomings of previous techniques. We evaluate our model using text classification, clustering and topic coherence on two varied short text corpora.
 \end{abstract}
 
 
 %
 % The code below should be generated by the tool at
 % http://dl.acm.org/ccs.cfm
-% Please copy and paste the code instead of the example below. 
-%
-\begin{CCSXML}
-<ccs2012>
- <concept>
-  <concept_id>10010520.10010553.10010562</concept_id>
-  <concept_desc>Computer systems organization~Embedded systems</concept_desc>
-  <concept_significance>500</concept_significance>
- </concept>
- <concept>
-  <concept_id>10010520.10010575.10010755</concept_id>
-  <concept_desc>Computer systems organization~Redundancy</concept_desc>
-  <concept_significance>300</concept_significance>
- </concept>
- <concept>
-  <concept_id>10010520.10010553.10010554</concept_id>
-  <concept_desc>Computer systems organization~Robotics</concept_desc>
-  <concept_significance>100</concept_significance>
- </concept>
- <concept>
-  <concept_id>10003033.10003083.10003095</concept_id>
-  <concept_desc>Networks~Network reliability</concept_desc>
-  <concept_significance>100</concept_significance>
- </concept>
-</ccs2012>  
-\end{CCSXML}
-
-\ccsdesc[500]{Computer systems organization~Embedded systems}
-\ccsdesc[300]{Computer systems organization~Redundancy}
-\ccsdesc{Computer systems organization~Robotics}
-\ccsdesc[100]{Networks~Network reliability}
-
 
 %
 % End generated code
@@ -251,357 +190,213 @@ is available on the web page to help you with the
 %
 %  Use this command to print the description
 %
-\printccsdesc
 
 % We no longer use \terms command
 %\terms{Theory}
 
-\keywords{ACM proceedings; \LaTeX; text tagging}
+\keywords{Topic Model, Word Embeddings, Topic Coherence, Short Text Classification, Short Text Clustering}
 
 \section{Introduction}
-The \textit{proceedings} are the records of a conference.
-ACM seeks to give these conference by-products a uniform,
-high-quality appearance.  To do this, ACM has some rigid
-requirements for the format of the proceedings documents: there
-is a specified format (balanced  double columns), a specified
-set of fonts (Arial or Helvetica and Times Roman) in
-certain specified sizes (for instance, 9 point for body copy),
-a specified live area (18 $\times$ 23.5 cm [7" $\times$ 9.25"]) centered on
-the page, specified size of margins (1.9 cm [0.75"]) top, (2.54 cm [1"]) bottom
-and (1.9 cm [.75"]) left and right; specified column width
-(8.45 cm [3.33"]) and gutter size (.83 cm [.33"]).
+In recent years, there has been a manifold increase in the generation of short unstructured textual content on diverse platforms such as social media, RSS news feeds and online advertising. In order to effectively exploit the enormous user generated content that is present in these texts, it is necessary to develop automated algorithms that can work with them. Automatic discovery of such information and themes has been addressed effectively through topic modelling. PLSA\cite{plsa} and LDA\cite{lda} view documents as mixtures of underlying latent themes or topics which can help uncover the structure and relations of documents within a collection. Although very effective on full size documents, LDA performs poorly on short text collections. This is mainly due to the lack of availabilty of contextual co-occurences of words and lower frequency counts\cite{wang}, among other factors.
+\\
+\\
+Two major heuristics which have been effectively applied to short texts are topic mixture relaxation and aggregation. The first heuristic assumes that a short text is drawn from a single topic. This in turn simplfies the process of inferring topics (via statistical techniques such as Gibbs sampling). Sparsity still persists, although partly alleviated since cross topic co-occurrence counts within a document are not required. Dirichlet Mixture Model(DMM)\cite{dmm} adapts LDA to short texts with this relaxation. A prominent shortcoming of this heuristic is that it fails to account for short texts that contain diverse words, assigning them to a single topic hurts topic coherence.
+\\
+\\
+The other heuristic uses meta information based ties that exist between short texts. For instance, Twitter's context information such as hashtags, authors, and location can be used to combine tweets and generate documents \cite{mehrotra}. However, it is hard to generalize such a strategy to work well with different domains and varied collections of short texts, for instance there is no meaningful meta information attached to short search snippets.
+\\
+\\
+Our project is motivated by the success of recent work that does not enforce such strong assumptions on the nature of the text corpora, and build generic topic models. Furthermore, the availability of pre-trained word embeddings, such as the word2vec\cite{w2v} Google news embeddings and Glove\cite{glove}, can aid us improve our semantic understanding of these texts. Since these embeddings are trained on large corpora, they implicitly encode co-occurrence information that can address sparsity issues. Our technique aims to partition short texts to obtain coherent blocks of words which form a semantic unit within that text. It is then reasonable to apply a topic relaxation assumption on such semantic units rather than the original text itself, and model co-occurences of words within these units to infer coherent topics. 
+\\
+\\
+Unlike Yan et al.'s work \cite{btm} which performs topic inference over word biterms, our model does not place a strong constraint on the structure or process of formation of units, but rather empirically builds them based on the content of that specific short text, guided by the corresponding representation in the embedding space. Experimental results based on text classification, text clustering and topic coherence over two varied datasets confirms the ability of our model to extract meaningful topics from noisy short texts, and scalabillity to large collections.
 
-The good news is, with only a handful of manual
-settings\footnote{Two of these, the {\texttt{\char'134 numberofauthors}}
-and {\texttt{\char'134 alignauthor}} commands, you have
-already used; another, {\texttt{\char'134 balancecolumns}}, will
-be used in your very last run of \LaTeX\ to ensure
-balanced column heights on the last page.}, the \LaTeX\ document
-class file handles all of this for you.
-
-The remainder of this document is concerned with showing, in
-the context of an ``actual'' document, the \LaTeX\ commands
-specifically available for denoting the structure of a
-proceedings paper, rather than with giving rigorous descriptions
-or explanations of such commands.
-
-\section{The {\secit Body} of The Paper}
-Typically, the body of a paper is organized
-into a hierarchical structure, with numbered or unnumbered
-headings for sections, subsections, sub-subsections, and even
-smaller sections.  The command \texttt{{\char'134}section} that
-precedes this paragraph is part of such a
-hierarchy.\footnote{This is the second footnote.  It
-starts a series of three footnotes that add nothing
-informational, but just give an idea of how footnotes work
-and look. It is a wordy one, just so you see
-how a longish one plays out.} \LaTeX\ handles the numbering
-and placement of these headings for you, when you use
-the appropriate heading commands around the titles
-of the headings.  If you want a sub-subsection or
-smaller part to be unnumbered in your output, simply append an
-asterisk to the command name.  Examples of both
-numbered and unnumbered headings will appear throughout the
-balance of this sample document.
-
-Because the entire article is contained in
-the \textbf{document} environment, you can indicate the
-start of a new paragraph with a blank line in your
-input file; that is why this sentence forms a separate paragraph.
-
-\subsection{Type Changes and {\subsecit Special} Characters}
-We have already seen several typeface changes in this sample.  You
-can indicate italicized words or phrases in your text with
-the command \texttt{{\char'134}textit}; emboldening with the
-command \texttt{{\char'134}textbf}
-and typewriter-style (for instance, for computer code) with
-\texttt{{\char'134}texttt}.  But remember, you do not
-have to indicate typestyle changes when such changes are
-part of the \textit{structural} elements of your
-article; for instance, the heading of this subsection will
-be in a sans serif\footnote{A third footnote, here.
-Let's make this a rather short one to
-see how it looks.} typeface, but that is handled by the
-document class file. Take care with the use
-of\footnote{A fourth, and last, footnote.}
-the curly braces in typeface changes; they mark
-the beginning and end of
-the text that is to be in the different typeface.
-
-You can use whatever symbols, accented characters, or
-non-English characters you need anywhere in your document;
-you can find a complete list of what is
-available in the \textit{\LaTeX\
-User's Guide}\cite{Lamport:LaTeX}.
-
-\subsection{Math Equations}
-You may want to display math equations in three distinct styles:
-inline, numbered or non-numbered display.  Each of
-the three are discussed in the next sections.
-
-\subsubsection{Inline (In-text) Equations}
-A formula that appears in the running text is called an
-inline or in-text formula.  It is produced by the
-\textbf{math} environment, which can be
-invoked with the usual \texttt{{\char'134}begin. . .{\char'134}end}
-construction or with the short form \texttt{\$. . .\$}. You
-can use any of the symbols and structures,
-from $\alpha$ to $\omega$, available in
-\LaTeX\cite{Lamport:LaTeX}; this section will simply show a
-few examples of in-text equations in context. Notice how
-this equation: \begin{math}\lim_{n\rightarrow \infty}x=0\end{math},
-set here in in-line math style, looks slightly different when
-set in display style.  (See next section).
-
-\subsubsection{Display Equations}
-A numbered display equation -- one set off by vertical space
-from the text and centered horizontally -- is produced
-by the \textbf{equation} environment. An unnumbered display
-equation is produced by the \textbf{displaymath} environment.
-
-Again, in either environment, you can use any of the symbols
-and structures available in \LaTeX; this section will just
-give a couple of examples of display equations in context.
-First, consider the equation, shown as an inline equation above:
-\begin{equation}\lim_{n\rightarrow \infty}x=0\end{equation}
-Notice how it is formatted somewhat differently in
-the \textbf{displaymath}
-environment.  Now, we'll enter an unnumbered equation:
-\begin{displaymath}\sum_{i=0}^{\infty} x + 1\end{displaymath}
-and follow it with another numbered equation:
-\begin{equation}\sum_{i=0}^{\infty}x_i=\int_{0}^{\pi+2} f\end{equation}
-just to demonstrate \LaTeX's able handling of numbering.
-
-\subsection{Citations}
-Citations to articles \cite{bowman:reasoning,
-clark:pct, braams:babel, herlihy:methodology},
-conference proceedings \cite{clark:pct} or
-books \cite{salas:calculus, Lamport:LaTeX} listed
-in the Bibliography section of your
-article will occur throughout the text of your article.
-You should use BibTeX to automatically produce this bibliography;
-you simply need to insert one of several citation commands with
-a key of the item cited in the proper location in
-the \texttt{.tex} file \cite{Lamport:LaTeX}.
-The key is a short reference you invent to uniquely
-identify each work; in this sample document, the key is
-the first author's surname and a
-word from the title.  This identifying key is included
-with each item in the \texttt{.bib} file for your article.
-
-The details of the construction of the \texttt{.bib} file
-are beyond the scope of this sample document, but more
-information can be found in the \textit{Author's Guide},
-and exhaustive details in the \textit{\LaTeX\ User's
-Guide}\cite{Lamport:LaTeX}.
-
-This article shows only the plainest form
-of the citation command, using \texttt{{\char'134}cite}.
-This is what is stipulated in the SIGS style specifications.
-No other citation format is endorsed or supported.
-
-\subsection{Tables}
-Because tables cannot be split across pages, the best
-placement for them is typically the top of the page
-nearest their initial cite.  To
-ensure this proper ``floating'' placement of tables, use the
-environment \textbf{table} to enclose the table's contents and
-the table caption.  The contents of the table itself must go
-in the \textbf{tabular} environment, to
-be aligned properly in rows and columns, with the desired
-horizontal and vertical rules.  Again, detailed instructions
-on \textbf{tabular} material
-is found in the \textit{\LaTeX\ User's Guide}.
-
-Immediately following this sentence is the point at which
-Table 1 is included in the input file; compare the
-placement of the table here with the table in the printed
-dvi output of this document.
-
-\begin{table}
-\centering
-\caption{Frequency of Special Characters}
-\begin{tabular}{|c|c|l|} \hline
-Non-English or Math&Frequency&Comments\\ \hline
-\O & 1 in 1,000& For Swedish names\\ \hline
-$\pi$ & 1 in 5& Common in math\\ \hline
-\$ & 4 in 5 & Used in business\\ \hline
-$\Psi^2_1$ & 1 in 40,000& Unexplained usage\\
-\hline\end{tabular}
-\end{table}
-
-To set a wider table, which takes up the whole width of
-the page's live area, use the environment
-\textbf{table*} to enclose the table's contents and
-the table caption.  As with a single-column table, this wide
-table will ``float" to a location deemed more desirable.
-Immediately following this sentence is the point at which
-Table 2 is included in the input file; again, it is
-instructive to compare the placement of the
-table here with the table in the printed dvi
-output of this document.
+\section{Related Work}
+In this section, we study recent models that learn topic representations for short texts. Domain and document independent topic learning and applications of word embeddings are of specific interest to us.
+\subsection{Conventional Topic Models}
+PLSA and LDA are designed to capture the implicit word co-occurrence pattern that is present in a collection of documents. These patterns are used to build topics. Thus the presence of a greater number of co-occurences leads to more reliable and representative topics being inferred. In a collection of short texts, it is not possible to obtain as many co-occurences thus leading to inferior topic inferencing, and hence poor performance on tasks that benefit from improved semantic annotation, such as classification and clustering. There have been earlier studies that attempt to improve the topic learning process using external knowledge of concepts from Wikipedia\cite{phan} or by clustering based on auxilary long texts that are obtained from a separate source\cite{jin}. High quality supervision via text corpora or external repositories may not be available in all domains.
+\subsection{DMM}
+The Dirichlet Mixture Model (DMM) is based on the assumption made in the mixture of unigrams model, which is that every unigram in a document is drawn from a single underlying topic. This assumption is generally reasonable and has been shown to significantly outperform any conventional topic model for short text mining in many studies \cite{btm, zhao}. Yin and Wang \cite{dmm} develop a collapsed Gibbs sampler for DMM and reveal it's effectiveness and simplicity, using tasks such as clustering.
+\subsection{Aggregation based Topic Models}
+An alternate strategy is to merge the constituent short texts into larger documents which can be subsequently processed using coventional topic models. In the context of twitter, application of hastag, timestamp and named entity based aggregation has been studied \cite{mehrotra, zhao}. However the dependence on suitable meta-infomation limits the generalizability of such models. Since meta data may not be available in several domains, such as search snippets and news tags, developing a generic model to study general short texts is necessary. SATM\cite{satm} attempts to make the aggregation process independent of the source of the short texts, by introducing the notion of pseudo documents, which are conceived by the soft aggregation of words across several short texts. These latent pseudo documents are assumed to be sampled in an LDA like manner and the topic assignments and pseudo documents are sampled in a mutually reinforcing manner. Clearly, results are highly dependent on the number of pseudo documents, which needs to be set in advance. Sparsity issues still exist although alleviated by now considering co-occurences of words across short texts which are aggregated into a pseudo document. The inference process is also computationally intensive which makes it hard to scale to large corpora.
+\subsection{Biterm Topic Model}
+BTM\cite{btm} attempts to explicitly model word co-occurence within a short text by assuming that every pair of words within a short text is sampled from a specific topic. BTM overcomes the rigidity of DMM since different biterms within a short text could be drawn from different topics, however it is rigid in the assignment of these biterms, since every pair of words is used in the inferencing of topics. Unrelated pairs of words could however hurt the topic formation. For instace, given a sample short text "machine product manufacturing company precision client service production" (drawn from the snippets dataset), biterms such as product manufacturing, machine precision etc are highly relevant. However biterms such as client machine, client precision are not meaningful and will hurt the topic formation process. Word embeddings provide us the means to prevent such biterms from consideration. 
+\\
+BTM also fares poorly in terms of scalability. For large corpora, millions of biterms are generated. Statistical Inferencing on such a large number of biterms is computationally infeasible. One of our goals is to improve cohesiveness of explicit semantic units, and to reduce computational effort. Explicitly modelling every biterm is unecessary in most cases, and the performance gains are incremental when the training time is taken into account.
+\subsection{Word Embedding based models}
+Word Embeddings are a valuable source of implicit word co-occurence information and distributional semantics, trained a large representative document corpus. Since they encode co-occurences implicitly, they are useful to deal with sparsity problems in short text topic models. We are particularly interested in LF-DMM \cite{lfdmm} and GPU-DMM \cite{gpudmm}, which are both recently proposed topic models that employ word embeddings in the modelling process.
+\\
+\cite{lfdmm} replaces the usual topic word multinomial distribution with a 2 component mixture, one based on a dirichlet multinomial component (as usual), and the second based on word embeddings. Each word is assumed to be either generated from the dirichlet multinomial topic distributions, or alternately from the word embedding space. Topics are projected onto this space through the application of a log linear optimization function, which produces a vector representation of a topic. Based on a simple switch mechanism, every word is either sampled from the DM topics or based on proximity to the vector representation of a topic. The authors propose the use of a simple bernoulli switch with a preset parameter. This simplistic switch design appears to hurt performance quite a bit. Furthermore, the optimization process for topic vectors must be carried out every sampling iteration, and this makes the inferencing process very computationally intensive.
+\\
+\cite{gpudmm} on the other hand, attempts to build a simpler model by extending DMM. Since sparsity of related words in a short text, and irrelevance based on a few unrelated words are two primary problems in DMM, GPU aims to address this by promoting words most related to the important words in our short text. The decision to promote the most related words to a specific word, is arrived at by studying the alignment of this word to the topic that is most likely for the whole short text. A stronger alignment would mean such a word is more related to the theme of the text, and hence it can undergo promotion for the words closest to it. GPU-DMM however could bias a short text by promoting a different number of similar words for each word chosen for promotion. Much of the proposed method is highly dependent on similarity thresholds, parameters in the sampling process, and the quality of the embeddings themselves.
 
 
-\begin{table*}
-\centering
-\caption{Some Typical Commands}
-\begin{tabular}{|c|c|l|} \hline
-Command&A Number&Comments\\ \hline
-\texttt{{\char'134}alignauthor} & 100& Author alignment\\ \hline
-\texttt{{\char'134}numberofauthors}& 200& Author enumeration\\ \hline
-\texttt{{\char'134}table}& 300 & For tables\\ \hline
-\texttt{{\char'134}table*}& 400& For wider tables\\ \hline\end{tabular}
-\end{table*}
-% end the environment with {table*}, NOTE not {table}!
-
-\subsection{Figures}
-Like tables, figures cannot be split across pages; the
-best placement for them
-is typically the top or the bottom of the page nearest
-their initial cite.  To ensure this proper ``floating'' placement
-of figures, use the environment
-\textbf{figure} to enclose the figure and its caption.
-
-This sample document contains examples of \textbf{.eps} files to be
-displayable with \LaTeX.  If you work with pdf\LaTeX, use files in the
-\textbf{.pdf} format.  Note that most modern \TeX\ system will convert
-\textbf{.eps} to \textbf{.pdf} for you on the fly.  More details on
-each of these is found in the \textit{Author's Guide}.
-
-\begin{figure}
-\centering
-\includegraphics{fly}
-\caption{A sample black and white graphic.}
+\begin{figure}[t!]
+    \centering
+    \subfigure[]{
+\label{fig:Classification performance}
+\includegraphics[width=3in]{dmmf_a.pdf}}
+\subfigure[]{
+\label{fig:Clustering performance}
+\includegraphics[width=3in]{Clustering.pdf}}
+    \caption{DMM unrelated word removal}
 \end{figure}
 
-\begin{figure}
-\centering
-\includegraphics[height=1in, width=1in]{fly}
-\caption{A sample black and white graphic
-that has been resized with the \texttt{includegraphics} command.}
+\section{Preliminary Experiments}
+It is necessary to verify a few of our hypotheses with simple experiments designed to validate some of our intuitions. 
+\subsection{Understanding when DMM struggles}
+Although DMM proves to be a very strong contender, both in terms of simplicity and computational efficiency, as well as performance on our metrics, one of it's primary shortcomings is that irrelevant words in certain texts are often forced to be explained by topics assigned to them, which can distort the topic formation process. A simple way to verify this is to remove the most unrelated words from every short text and perform the topic modelling process on the reduced set of short texts.
+\\[10pt]
+More specifically, given a short text $S_{i} = {w_1, w_2 ... w_{|S_{i}|}}$, for each word $w_{j} \in S_{i}$ we define the average semantic relatedness of $w_{j}$ to $S_{i}$ as:
+$$Avg.S.R(w_{j}, S_{i}) = \frac{\sum_{w_{k} \in S_{i}, k \neq j}Relatedness(w_{k}, w_{j})}{|S_{i}|-1}$$
+The least semantically related words in each text are discarded (we set the value to discard several words (20\%) in order to measure it's impact on dmm results). Results were obtained from models trained before and after removal of these words for the classification and clustering tasks on the snippet dataset (We formally define the classification and clustering tasks in the experiment section), presented in \ref{fig:Classification performance} and \ref{fig:Clustering performance}.\\[10pt]
+Based on inspection, it is evident that DMMF (DMM filtered) performs atleast as well as DMM (All results are averaged over 5 runs of each training cycle).
+\begin{figure}[t!]
+    \centering
+    \subfigure[]{
+\label{fig:BTM_clas}
+\includegraphics[width=3in]{btm_clas.pdf}}
+\subfigure[]{
+\label{fig:BTM_clus}
+\includegraphics[width=3in]{btm_clus.pdf}}
+    \caption{BTM incoherent biterm removal}
 \end{figure}
+\subsection{Testing our BTM hypothesis}
+We hypothesize that a large proportion of BTM's word pairs are likely to be incoherent in most corpora. To test this, we remove the bottom 50\% of all biterms generated from the Snippet dataset and retrain the BTM model on this reduced set of biterms, in order to evaluate change in performance, again on the classification and clustering tasks (\ref{fig:BTM_clas} and \ref{fig:BTM_clus}). The biterms are sorted based on the cosine similarity of the constituent terms in the word2vec embedding space.
+\\[5pt]
+Although there is a performance drop in BTMF (BTM after filtering), given the drastic reduction in the number of biterms (by 50\%), qualitatively the drop appears to be marginal.
 
-
-As was the case with tables, you may want a figure
-that spans two columns.  To do this, and still to
-ensure proper ``floating'' placement of tables, use the environment
-\textbf{figure*} to enclose the figure and its caption.
-and don't forget to end the environment with
-{figure*}, not {figure}!
-
-\begin{figure*}
-\centering
-\includegraphics{flies}
-\caption{A sample black and white graphic
-that needs to span two columns of text.}
-\end{figure*}
-
-
+\section{Unit Topic Model}
+\subsection{Unit Generative Model}
+In this section we define out topic model, UTM. UTM requires input in the form of a set of units, which are partitions of the short texts present in the corpora. In this project we separate the process of unit formation from that of topic inferencing in UTM. As a future extension, we intend to look at a joint generative process that simultaneously learns unit partitions and topics.
+\\
 \begin{figure}
-\centering
-\includegraphics[height=1in, width=1in]{rosette}
-\caption{A sample black and white graphic that has
-been resized with the \texttt{includegraphics} command.}
-\vskip -6pt
+\label{UTM}
+\includegraphics[width=3in]{utm}
 \end{figure}
-
-\subsection{Theorem-like Constructs}
-Other common constructs that may occur in your article are
-the forms for logical constructs like theorems, axioms,
-corollaries and proofs.  There are
-two forms, one produced by the
-command \texttt{{\char'134}newtheorem} and the
-other by the command \texttt{{\char'134}newdef}; perhaps
-the clearest and easiest way to distinguish them is
-to compare the two in the output of this sample document:
-
-This uses the \textbf{theorem} environment, created by
-the\linebreak\texttt{{\char'134}newtheorem} command:
-\newtheorem{theorem}{Theorem}
-\begin{theorem}
-Let $f$ be continuous on $[a,b]$.  If $G$ is
-an antiderivative for $f$ on $[a,b]$, then
-\begin{displaymath}\int^b_af(t)dt = G(b) - G(a).\end{displaymath}
-\end{theorem}
-
-The other uses the \textbf{definition} environment, created
-by the \texttt{{\char'134}newdef} command:
-\newdef{definition}{Definition}
-\begin{definition}
-If $z$ is irrational, then by $e^z$ we mean the
-unique number which has
-logarithm $z$: \begin{displaymath}{\log e^z = z}\end{displaymath}
-\end{definition}
-
-Two lists of constructs that use one of these
-forms is given in the
-\textit{Author's  Guidelines}.
- 
-There is one other similar construct environment, which is
-already set up
-for you; i.e. you must \textit{not} use
-a \texttt{{\char'134}newdef} command to
-create it: the \textbf{proof} environment.  Here
-is a example of its use:
-\begin{proof}
-Suppose on the contrary there exists a real number $L$ such that
-\begin{displaymath}
-\lim_{x\rightarrow\infty} \frac{f(x)}{g(x)} = L.
-\end{displaymath}
-Then
-\begin{displaymath}
-l=\lim_{x\rightarrow c} f(x)
-= \lim_{x\rightarrow c}
-\left[ g{x} \cdot \frac{f(x)}{g(x)} \right ]
-= \lim_{x\rightarrow c} g(x) \cdot \lim_{x\rightarrow c}
-\frac{f(x)}{g(x)} = 0\cdot L = 0,
-\end{displaymath}
-which contradicts our assumption that $l\neq 0$.
-\end{proof}
-
-Complete rules about using these environments and using the
-two different creation commands are in the
-\textit{Author's Guide}; please consult it for more
-detailed instructions.  If you need to use another construct,
-not listed therein, which you want to have the same
-formatting as the Theorem
-or the Definition\cite{salas:calculus} shown above,
-use the \texttt{{\char'134}newtheorem} or the
-\texttt{{\char'134}newdef} command,
-respectively, to create it.
-
-\subsection*{A {\secit Caveat} for the \TeX\ Expert}
-Because you have just been given permission to
-use the \texttt{{\char'134}newdef} command to create a
-new form, you might think you can
-use \TeX's \texttt{{\char'134}def} to create a
-new command: \textit{Please refrain from doing this!}
-Remember that your \LaTeX\ source code is primarily intended
-to create camera-ready copy, but may be converted
-to other forms -- e.g. HTML. If you inadvertently omit
-some or all of the \texttt{{\char'134}def}s recompilation will
-be, to say the least, problematic.
-
-\section{Conclusions}
-This paragraph will end the body of this sample document.
-Remember that you might still have Acknowledgments or
-Appendices; brief samples of these
-follow.  There is still the Bibliography to deal with; and
-we will make a disclaimer about that here: with the exception
-of the reference to the \LaTeX\ book, the citations in
-this paper are to articles which have nothing to
-do with the present subject and are used as
-examples only.
-%\end{document}  % This is where a 'short' article might terminate
-
+The UTM models assumes that topic proportions and topic word distributions are drawn from a dirichlet prior, similar to LDA. However since each unit is assumed to be drawn from a single topic, there is a single global topic proportion. All the words in a unit are drawn from the same topic, according to the dirichlet multinomial topic word distribution. The generative process is as follows:
+\begin{itemize}
+\item Sample a global topic proportion $\theta \; \sim \; Dirichlet(\alpha)$
+\item For each topic k $\in {1, ... ,K}:$ \begin{itemize} \item[] Draw a topic-word distribution $\phi_{k} \; \sim \; Dirichlet(\beta)$\end{itemize}
+\item For each unit $U_{i} \in U$\begin{itemize}
+\item[a] Sample a topic $z_{i} \; \sim \; Multinomial(\theta)$ 
+\item[b] For each word w $\in U_{i}$: \begin{itemize} \item[] Sample w $\sim \; Multinomial(\phi_{z_{i}})$\end{itemize}
+\end{itemize}
+\end{itemize}
+\ref{utm} illustrates the above process. Inferencing is carried out via Gibbs sampling. Details are provided in the Experiments section.
 %ACKNOWLEDGMENTS are optional
-\section{Acknowledgments}
-This section is optional; it is a location for you
-to acknowledge grants, funding, editing assistance and
-what have you.  In the present case, for example, the
-authors would like to thank Gerald Murray of ACM for
-his help in codifying this \textit{Author's Guide}
-and the \textbf{.cls} and \textbf{.tex} files that it describes.
+\subsection{Inference by Gibbs Sampling}
+In this section, we define the procedure to obtain parameters $\phi$ and $\theta$ in UTM. Similar to LDA, exact inferencing of topics and topic proportion is computationally intractable. Thus it is necessary to apply an approximate inferencing algorithm. Gibbs sampling is a widely used MCMC algorithm, which has the advantages of asymptotically approaching the correct distribution as the number of iterations performed is increased, and can be memory efficient since it only needs to store the current states of units, and the word-topic assignment counts. In our system, we condition the topic distribution for a single unit, based on the current states of all other units, and sample a new topic assignment from the corresponding conditional distribution.
+\\[10pt]
+We begin by choosing initial states randomly for all units, and subsequently calculate the conditional distribution given by $$P(z | z_{\neg U _{i}}, U, \alpha, \beta)$$  where U is the pre defined set of all units in our short text corpus, $z_{\neg U_{i}}$ is the set of topic assignments for all the remaining units except the $i^{th}$ unit for which a topic assignment is currently being sampled and $\alpha$ and $\beta$ are the topic proportion and word-topic distribution priors, respectively. This can be given by:
+\[ P(z=k \mid z_{-u} , U, \alpha, \beta) = \frac{n_{k, \neg d} + \alpha}{U-1 + K \alpha} \times \frac{\prod\limits_{w \in u} n^w_{k, \neg d} + \beta }{\prod\limits_{w \in u} n_{k, \neg d} + V \beta} \]
+\begin{align*}
+& n^w_{k, \neg d} : \text{Number of times word w is assigned to topic k} \\
+& n_{k, \neg d} : \text{Number of units assigned to topic k} \\
+\end{align*}
+Intuitively this is fairly easy to interpret. The first term in the probability computation counts the number of units assigned to the current topic, smoothed by the dirichlet prior $\alpha$. The second term is a product over the probabilities of each word in this unit being assigned to topic z, smoothed by dirichlet prior $\beta$. Similarly we update the word-topic distribution and topic probabilities: \\
+$$\phi_{z}(w) = \frac{n^w_{k} + \beta}{\sum_{w}{n^w_k} + M\beta}$$
+$$\theta_{z} = \frac{n_{z} + \alpha}{U-1 + K\alpha}$$
+For the sake of brevity, we omit the detailed derivation of this sampler.
+
+\subsection{Semantic Enrichment/Expansion of Short Texts}
+Given a short text $S_{i}$ = ${w_{1},w_{2} ... w_{|S_{i}|}}$, our goal is to discover a partition U = ${U_{1}, U_{2} ... U_{u(S_{i})}}$ of $S_{i}$ such that $$\cup_{u=1}^{u(S_{i})}U_{u} = \mathbf{S_{i}}$$ where $u(S_{i})$ is the total number of semantically diverse units chosen for the $i^{th}$  short text and, $$\mathbf{S_{i}} = S_{i} \cup E(S_{i})$$ where $(E(S_{i})$ is a set of related words that is appended to $S_{i}$ based on co-occurrence knowledge (distributional semantic information). The addition of $E_{i}$ enriches the content of $S_{i}$ and helps obtain better units upon partitioning it.
+\\
+\\
+There are 2 sources of distributional semantics that we apply to split our short texts and to discover closely related words that can be appended to our text to produce better units and deal with sparsity. The first source is the set of pre-trained 300 dimensional word2vec embeddings. Since this is trained on a very vast external corpus, we call this our global co-occurrence information.\\ On the other hand, there is information hnidden in the current corpus of short texts that we are working with. This local co-occurrence information can be captured by running a coarse DMM (low topic count) model on the corpus which involves minimal computation. This returns us a word-topic vector for every word in the corpus (we denote this vector as $v_{cDMM}(w_{j}) = \{p_{cDMM}(z|w_{j}), z \in \{1 ... K\}\}$). This also helps us deal with words that are not present in our embeddings vocabulary.
+\subsubsection{Word Promotion}
+In order to deal with sparsity problems and form coherent unit partitions, we extend our input short texts using semantically related words that can enhance the dominant semantic theme of a short text. We do this by choosing a set of words within each short text, that are 'promoted'. Promotion here refers to the process of increasing their semantic influence by adding words that are closely related to these promoted words in the embedding space, to the short text. The process of deciding which words to promote is based on the cDMM vectors that we mentioned earlier. The cDMM vectors let us know how likely it is that a specific word is aligned to the overall semantic theme of this short text. The higher the alignment, the more likely it is that we promote this word.\\
+We model the topical alignment of a short text S as follows:
+$$P(z=k|S) \propto P(z=k)\times \pi_{i=1}^{N_S} P(w_{i}|z=k)$$
+where S is the short text in consideration, and $P(w|k)$ and $P(z=k)$ are obtained from the counts in the final iteration of training of cDMM on the corpus. The above probability is based on the Sum over Words (SW) formulation which is frequently applied in the context of short text classification \cite{btm}. \\
+Similarly word alignment information is available in the form of $P(z=k|w)$ which can also be inferred from the assignments in the final iteration of cDMM training. Thus we obtain K-dimensional topical alignment vectors for the short text as well as it's words (we denote them as $A_{S}$ and $A_{w}, w \in S$ respectively. We then measure the likelihood that the word w is part of the semantic theme of short text S in terms of the similarity of their alignment vectors. The higher the similarity the more likely it is that we promote word w by adding it's closest semantic neighbors in the embedding space.
+$$P(\text{w is promoted}) \propto Similarity(A_{S}, A_{w})$$
+In our experiments we use the cosine similarity function in the above equation. A coin loaded with the above probability is then flipped to decide if a word in S is promoted or not.
+\subsubsection{Semantic Expansion}
+For every word that is chosen to be promoted a maximum of 5 words are added to the short text. A threshold value $\tau$ is set to the cosine similarity values, based on inspection of several common words and all their related words in the embedding space. An exception to this is when words have too many related words. For instance, names of countries often link to other countries' names with a very high cosine similarity. However this does not make them strongly semantically related. We do not promote any such words, which have a very high number of words crossing the threshold value. The expansion set E is thus constructed as follows:
+$$E(S_{i}) = \{w; w \notin S_{i}, \exists w'\in S_{i}\; s.t \; sim(w, w') > \tau\}$$
+$$\mathbf{S_{i}} = S_{i} \cup E(S_{i})$$
+\subsection{Partioning into Units}
+We implement and report experimental results for two differnt partioning schemes that appear to perform effectively. Although we experimented with several sophisticated partioning schemes, which increase computational overheads, performance gains were marginal. We describe a few of these schemes as well.
+\subsubsection{K-Means based partitioning}
+For every short text $S_{i}$, the corresponding expanded short text $\mathbf{S_{i}}$ is projected onto the word2vec 300 dimensional embedding space. A k-means clustering algorithm is then applied to detect clusters of related embeddings from $S_{i}$. The choice of number of clusters is decided by the ratio of average intra cluster to inter cluster L2 distances, and alternately using average intra cluster cohesiveness (which can be defined as the average mutual similarity of words within clusters, averaged across all clusters). For our experiments we use the cohesiveness metric to decide the value of k, the number of clusters/units.
+\subsubsection{K-medoids based on Linear Partioning Metric}
+The previous partioning metric is purely based the word2vec embedding space representation of the contents of each short text. It might be beneficial to include co-occurence information based on our own corpus as well, in addition to that provided by the GoogleNews corpus. In order to address this, we propose a simple pairwise linear similarity metric(LSM) between a pair of words in a given short text.
+\\
+\begin{align*}
+LSM(w_{i}, w_{j}) &= \lambda \times sim(v_{cDMM}(w_{i}), v_{cDMM}(w_{j})) \\
+&+ (1-\lambda) \times sim(\bar{w_{i}}, \bar{w_{j}})
+\end{align*}
+where $\lambda$ is an empirical weight and $\bar{w}$ represents the word2vec vector representation of word w.
+\\
+Given the pairwise similarity/distance for every pair of words within a given short text $\mathbf{S_{i}}$, we can now perform k-medoids based clustering on these words to obtain units. The number of clusters, i.e. k, is set in a manner similar to the previous partitioning scheme.
+\subsubsection{Overlapping Probabilistic Unit Formation}
+The above two partioning methods produce non overlapping units. However, in some cases generation of overlapping units might be beneficial when some words fit in well into multiple topics due to their mutual semantic relations with other words in these topics. We propose a simple probabilistic unit formation method.
+\begin{itemize}
+\item[] For every word $w \in S$, choose to promote w with a probability proportional to the topical alignment of w with S (as defined section 4.3.1). 
+\item If a word w is promoted, a new unit is constructed, $u_{w}$. The word w is added to this unit. Now: \begin{itemize}
+\item For every w' $\in$ S and w' $\neq$ w, flip a loaded coin with probability proportional to the average cosine similarity of w' to every other word that is present in the new unit $u_{w}$.
+\item If the coin flip is successful add w' to $u_{w}$ and proceed to next word w''.
+\end{itemize}
+Overlapping topic formation tends to perform relativ ely poor. We deduce two primary reasons for this. Firstly most cosine similarities of common word pairs lie in a very small range of values between 0.4 to 0.6 in the word2vec embedding space. This causes practically every word to be promoted with a constant probability of 0.5 which is similar to random promotion. Secondly, some words could be left out in the above process if they are not successfully introduced into any unit. These two effects of random selection are quite hard to deal with in an unbiased manner.
+\end{itemize}
+\begin{center}
+\begin{table}[t]
+\label{ta1}
+\begin{tabular}{c|cccc}
+\hline
+Dataset & \# Docs & Avg. Len & \# Labels & Vocab\\
+\hline
+Snippet & 12340 & 10.72 & 8 & 5977\\
+\hline
+ TMN & 32503 & 4.9 & 7 & 8173\\
+\hline
+\end{tabular}
+\caption{Dataset Description}
+\end{table}
+\end{center}
+\section{Evaluation}
+\subsection{Dataset Description}
+We work with 2 short text dataset that are obtained from very varied sources. Both datasets\footnote{http://acube.di.unipi.it/tmn-dataset/} are publicly available for download. The details are as tabulated in Table 1.
+
+\subsection{Experimental Setup}
+We implement Gibbs Sampling inferencing algorithms with priors $\alpha$ set to $\frac{50}{K}$ where K is the number of topics (set between 20-80 in most experiments for both datasets), $\beta$ set to 0.01 (\cite{btm,dmm}) and number of Gibbs Iterations set to 1000. Additionally threshold $\tau$ for semantic expansion is set to 0.5, linear similarity proportion $\lambda$ is set to 0.5, and coarse DMM run with K set to 5 topics.
+
+\subsection{Evaluation Metrics}
+We evaluate performance on 3 common tasks in the context of short text topic models, namely Short Text Classification, Short Text Clustering and Topic Coherence. Classification and Clustering are evaluated against the respective ground truth labels that are present in the dataset. The details of the evaluation methodology are as follows:
+\subsubsection{Short Text Classification} 
+The results of our inferencing process provide us a topical alignment or topic distribution vector $p(z|S)$ for every short text in our corpus. Hence, an indirect assessment of the quality of topics and assignments of texts to topics, can be measured as the accuracy of a classifier that relies on the $\{p(z|S)\}$ vector to perform classification. We employ a Support Vector Machine (SVM) with linear kernel settings, and default parameters in the python sklearn package, and the accuracy of classification is determined via 5 fold cross validation on both datasets.
+\\
+\\
+Since all the models considered here assume single topics for short documents (units), it could be inappropriate to esimate topical distributions for classification merely based on the final topic assignments \cite{gpudmm, btm}. The post inference probabilities $p(z|d)$ is generally inferred in two different ways:
+\\
+\textbf{Naive Bayes (NB) Rule:}
+Each word appearence is independently assumed to be drawn from the topic assigned to a unit. Hence:
+$$p(z=k |S) \propto p(z=k)/;\pi_{i=1}^{N_{S}}p(w_{i}|z=k)$$
+\\
+\textbf{Summation over Words (SW) Rule:}
+Every word in the vocabulary is used to establish the likelihood of a topic given a document using chain rule.
+$$p(z=k |S) \propto \sum_{w}p(z=k|w)p(w|d)$$
+Although there is no study thoroughly evaluating the relative performance of the NB and SW methods for classification, \cite{satm} shows the SW approach to largely improve classification results with DMM and LDA based topics. All of our experimental results employ SW based classification.
+
+\subsubsection{Short Text Clustering} 
+There are two simple ways to cluster text based on the inferencing results that we obtain. The first it to assign each short text S to the z which maximizes probabability of assignment:
+$$z_{S} = argmax_{z \in \{1, ... ,K\}}p(z|S)$$
+This produces between 1 and K clusters, where K is the total number of topics. An alternate assignment strategy is to run K-means on the $\bar{p(z|S)}$ vectors. We leave this for future work, and currently perform clustering using the max assignment. Our clusters are evaluated using the NMI (Normalized Mutual Information) metric.
+\\
+
+\begin{align*}
+NMI(\Omega, \mathbb{C)} &= \frac{I(\Omega ; \mathbb{C})}{\left[ H(\Omega) + H (\mathbb{C} \right] /2} \\[5pt]
+&= \frac{ \sum_{i, j} \frac{| \omega_i \cap c_j|}{n} \log \frac{|\omega_i| |c_j|}
+{n |\omega_i \cap c_j|} }{(\sum_i \frac{|\omega_i|}{n} \log \frac{\omega_i}{n} + \sum_j \frac{|c_j|}{n} \log \frac{c_j}{n})/2}
+\end{align*}
+NMI penalizes the mutual information of clusters, $I(\Omega ; \mathbb{C})$ by their entropies in order to avoid bias towards a large number of clusters. It equals 1 if the 2 clusters are a perfect match, and lies between 0 and 1 in all other scenarios.
+\subsubsection{Topic Coherence}
+Topic Coherence attempts to capture the semantic cohesiveness of the topics built by the inferencing process. Words that appear in the top T spots of a topic, must be semantically related in order for the topic to be meaningful. We measure the semantic coherence of the top words of each topic, by applying cosine similarity to the corresponding Glove - 50 dimensional pre trained embeddings. This is an unbiased way to evaluate topic coherence, since word2vec and Glove embeddings are trained on different corpora and are obtained by optimizing different functions.
+\\
+Thus given the set of K topics, we choose the top T words for each topic, ranked by $p(w|z)$, and compute their average cosine similarity.
+$$Topic \;Coherence = \frac{1}{K \times ^{T}C_{2}}\sum_{k}\sum_{1 \leq i < j \leq T}sim(w_{i}, w_{j})$$
+
 
 %
 % The following two commands are all you need in the
@@ -618,51 +413,19 @@ and the \textbf{.cls} and \textbf{.tex} files that it describes.
 %
 %APPENDICES are optional
 %\balancecolumns
-\appendix
+
 %Appendix A
-\section{Headings in Appendices}
-The rules about hierarchical headings discussed above for
-the body of the article are different in the appendices.
-In the \textbf{appendix} environment, the command
-\textbf{section} is used to
-indicate the start of each Appendix, with alphabetic order
-designation (i.e. the first is A, the second B, etc.) and
-a title (if you include one).  So, if you need
-hierarchical structure
-\textit{within} an Appendix, start with \textbf{subsection} as the
-highest level. Here is an outline of the body of this
-document in Appendix-appropriate form:
-\subsection{Introduction}
-\subsection{The Body of the Paper}
-\subsubsection{Type Changes and  Special Characters}
-\subsubsection{Math Equations}
-\paragraph{Inline (In-text) Equations}
-\paragraph{Display Equations}
-\subsubsection{Citations}
-\subsubsection{Tables}
-\subsubsection{Figures}
-\subsubsection{Theorem-like Constructs}
-\subsubsection*{A Caveat for the \TeX\ Expert}
-\subsection{Conclusions}
-\subsection{Acknowledgments}
-\subsection{Additional Authors}
-This section is inserted by \LaTeX; you do not insert it.
-You just add the names and information in the
-\texttt{{\char'134}additionalauthors} command at the start
-of the document.
-\subsection{References}
-Generated by bibtex from your ~.bib file.  Run latex,
-then bibtex, then latex twice (to resolve references)
-to create the ~.bbl file.  Insert that ~.bbl file into
-the .tex source file and comment out
-the command \texttt{{\char'134}thebibliography}.
+
+
+
+%Generated by bibtex from your ~.bib file.  Run latex,
+%then bibtex, then latex twice (to resolve references)
+%to create the ~.bbl file.  Insert that ~.bbl file into
+%the .tex source file and comment out
+%the command \texttt{{\char'134}thebibliography}.
 % This next section command marks the start of
 % Appendix B, and does not continue the present hierarchy
-\section{More Help for the Hardy}
-The sig-alternate.cls file itself is chock-full of succinct
-and helpful comments.  If you consider yourself a moderately
-experienced to expert user of \LaTeX, you may find reading
-it useful but please remember not to change it.
-%\balancecolumns % GM June 2007
-% That's all folks!
+
+
+
 \end{document}

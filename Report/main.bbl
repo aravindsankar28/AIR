@@ -1,0 +1,91 @@
+\begin{thebibliography}{10}
+
+\bibitem{lda}
+D.~M. Blei, A.~Y. Ng, and M.~I. Jordan.
+\newblock Latent dirichlet allocation.
+\newblock {\em Journal of machine Learning research}, 3(Jan):993--1022, 2003.
+
+\bibitem{plsa}
+T.~Hofmann.
+\newblock Probabilistic latent semantic indexing.
+\newblock In {\em Proceedings of the 22nd annual international ACM SIGIR
+  conference on Research and development in information retrieval}, pages
+  50--57. ACM, 1999.
+
+\bibitem{jin}
+O.~Jin, N.~N. Liu, K.~Zhao, Y.~Yu, and Q.~Yang.
+\newblock Transferring topical knowledge from auxiliary long texts for short
+  text clustering.
+\newblock In {\em Proceedings of the 20th ACM international conference on
+  Information and knowledge management}, pages 775--784. ACM, 2011.
+
+\bibitem{gpudmm}
+C.~Li, H.~Wang, Z.~Zhang, A.~Sun, and Z.~Ma.
+\newblock Topic modeling for short texts with auxiliary word embeddings.
+\newblock In {\em Proceedings of the 39th International ACM SIGIR conference on
+  Research and Development in Information Retrieval}, pages 165--174. ACM,
+  2016.
+
+\bibitem{mehrotra}
+R.~Mehrotra, S.~Sanner, W.~Buntine, and L.~Xie.
+\newblock Improving lda topic models for microblogs via tweet pooling and
+  automatic labeling.
+\newblock In {\em Proceedings of the 36th international ACM SIGIR conference on
+  Research and development in information retrieval}, pages 889--892. ACM,
+  2013.
+
+\bibitem{w2v}
+T.~Mikolov.
+\newblock word2vec: Tool for computing continuous distributed representations
+  of words, 2013.
+
+\bibitem{lfdmm}
+D.~Q. Nguyen, R.~Billingsley, L.~Du, and M.~Johnson.
+\newblock Improving topic models with latent feature word representations.
+\newblock {\em Transactions of the Association for Computational Linguistics},
+  3:299--313, 2015.
+
+\bibitem{glove}
+J.~Pennington, R.~Socher, and C.~D. Manning.
+\newblock Glove: Global vectors for word representation.
+\newblock In {\em EMNLP}, volume~14, pages 1532--43, 2014.
+
+\bibitem{phan}
+X.-H. Phan, L.-M. Nguyen, and S.~Horiguchi.
+\newblock Learning to classify short and sparse text \& web with hidden topics
+  from large-scale data collections.
+\newblock In {\em Proceedings of the 17th international conference on World
+  Wide Web}, pages 91--100. ACM, 2008.
+
+\bibitem{satm}
+X.~Quan, C.~Kit, Y.~Ge, and S.~J. Pan.
+\newblock Short and sparse text topic modeling via self-aggregation.
+\newblock {\em Proc. ICWSM}, pages 2270--2276, 2015.
+
+\bibitem{wang}
+X.~Wang and A.~McCallum.
+\newblock Topics over time: a non-markov continuous-time model of topical
+  trends.
+\newblock In {\em Proceedings of the 12th ACM SIGKDD international conference
+  on Knowledge discovery and data mining}, pages 424--433. ACM, 2006.
+
+\bibitem{btm}
+X.~Yan, J.~Guo, Y.~Lan, and X.~Cheng.
+\newblock A biterm topic model for short texts.
+\newblock In {\em Proceedings of the 22nd international conference on World
+  Wide Web}, pages 1445--1456. ACM, 2013.
+
+\bibitem{dmm}
+J.~Yin and J.~Wang.
+\newblock A dirichlet multinomial mixture model-based approach for short text
+  clustering.
+\newblock In {\em Proceedings of the 20th ACM SIGKDD international conference
+  on Knowledge discovery and data mining}, pages 233--242. ACM, 2014.
+
+\bibitem{zhao}
+W.~X. Zhao, J.~Jiang, J.~Weng, J.~He, E.-P. Lim, H.~Yan, and X.~Li.
+\newblock Comparing twitter and traditional media using topic models.
+\newblock In {\em European Conference on Information Retrieval}, pages
+  338--349. Springer, 2011.
+
+\end{thebibliography}
