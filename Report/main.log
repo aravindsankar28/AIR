@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  14 DEC 2016 21:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  14 DEC 2016 22:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -240,7 +240,20 @@ Package: subfigure 2002/03/15 v2.1.5 subfigure package
 \subfig@top=\skip48
 \subfig@bottom=\skip49
 )
-(./main.aux)
+(./main.aux
+
+LaTeX Warning: Label `fig:TC performance' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:TC performance' multiply defined.
+
+
+LaTeX Warning: Label `fig:TCtmn performance' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:TCtmn performance' multiply defined.
+
+)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 51.
@@ -255,8 +268,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 51.
 LaTeX Font Info:    ... okay on input line 51.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 51.
 LaTeX Font Info:    ... okay on input line 51.
-
-(/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+ (/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count115
 \scratchdimen=\dimen125
@@ -458,16 +470,79 @@ Underfull \hbox (badness 10000) in paragraph at lines 384--387
 
  []
 
-[6] (./main.bbl) [7] (./main.aux)
+[6] <images/Class_snip.pdf, id=100, 362.35374pt x 217.81375pt>
+File: images/Class_snip.pdf Graphic file (type pdf)
+
+<use images/Class_snip.pdf>
+Package pdftex.def Info: images/Class_snip.pdf used on input line 405.
+(pdftex.def)             Requested size: 216.81pt x 130.32698pt.
+
+<images/Class_TMN.pdf, id=101, 362.35374pt x 217.81375pt>
+File: images/Class_TMN.pdf Graphic file (type pdf)
+
+<use images/Class_TMN.pdf>
+Package pdftex.def Info: images/Class_TMN.pdf used on input line 408.
+(pdftex.def)             Requested size: 216.81pt x 130.32698pt.
+
+<images/Clus_Snip.pdf, id=102, 362.35374pt x 217.81375pt>
+File: images/Clus_Snip.pdf Graphic file (type pdf)
+
+<use images/Clus_Snip.pdf>
+Package pdftex.def Info: images/Clus_Snip.pdf used on input line 422.
+(pdftex.def)             Requested size: 216.81pt x 130.32698pt.
+
+<images/Clus_TMN.pdf, id=103, 362.35374pt x 217.81375pt>
+File: images/Clus_TMN.pdf Graphic file (type pdf)
+
+<use images/Clus_TMN.pdf>
+Package pdftex.def Info: images/Clus_TMN.pdf used on input line 425.
+(pdftex.def)             Requested size: 216.81pt x 130.32698pt.
+
+<images/TC_Snip.pdf, id=104, 362.35374pt x 217.81375pt>
+File: images/TC_Snip.pdf Graphic file (type pdf)
+
+<use images/TC_Snip.pdf>
+Package pdftex.def Info: images/TC_Snip.pdf used on input line 432.
+(pdftex.def)             Requested size: 216.81pt x 130.32698pt.
+
+<images/TC_TMN.pdf, id=105, 362.35374pt x 217.81375pt>
+File: images/TC_TMN.pdf Graphic file (type pdf)
+ <use images/TC_TMN.pdf>
+Package pdftex.def Info: images/TC_TMN.pdf used on input line 435.
+(pdftex.def)             Requested size: 216.81pt x 130.32698pt.
+
+<images/Time_Snip.pdf, id=106, 362.35374pt x 217.81375pt>
+File: images/Time_Snip.pdf Graphic file (type pdf)
+
+<use images/Time_Snip.pdf>
+Package pdftex.def Info: images/Time_Snip.pdf used on input line 442.
+(pdftex.def)             Requested size: 216.81pt x 130.32698pt.
+
+<images/Time_TMN.pdf, id=107, 362.35374pt x 217.81375pt>
+File: images/Time_TMN.pdf Graphic file (type pdf)
+
+<use images/Time_TMN.pdf>
+Package pdftex.def Info: images/Time_TMN.pdf used on input line 445.
+(pdftex.def)             Requested size: 216.81pt x 130.32698pt.
+ (./main.bbl [7 <./images/Class_snip.pdf> <./images/Class_TMN.pdf> <./images/Cl
+us_Snip.pdf> <./images/Clus_TMN.pdf>]
+
+LaTeX Warning: Text page \thepage  contains only floats.
+
+) [8 <./images/TC_Snip.pdf> <./images/TC_TMN.pdf> <./images/Time_Snip.pdf> <./i
+mages/Time_TMN.pdf>] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 3413 strings out of 493014
- 44234 string characters out of 6133351
- 120740 words of memory out of 5000000
- 6835 multiletter control sequences out of 15000+600000
+ 3466 strings out of 493014
+ 45413 string characters out of 6133351
+ 120905 words of memory out of 5000000
+ 6879 multiletter control sequences out of 15000+600000
  59237 words of font info for 83 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  41i,10n,36p,1335b,466s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -491,10 +566,10 @@ s/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1
 /urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times
 /utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.p
 fb>
-Output written on main.pdf (7 pages, 323236 bytes).
+Output written on main.pdf (8 pages, 417777 bytes).
 PDF statistics:
- 167 PDF objects out of 1000 (max. 8388607)
- 120 compressed objects within 2 object streams
+ 297 PDF objects out of 1000 (max. 8388607)
+ 214 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
- 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 66 words of extra memory for PDF output out of 10000 (max. 10000000)
 
