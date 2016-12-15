@@ -13,10 +13,10 @@ using namespace std;
 int N = 40;
 double alpha = 50.0/N;
 double beta = 0.01;
-int numIter = 10;
+int numIter = 1000;
 int vocabSize;
 int numUnits;
-char* inputFileName = "units.txt";
+// char* inputFileName = "units.txt";
 map<string,int> wordMap;
 map<int,string> wordMapRev;
 set<string> vocab;
@@ -157,7 +157,7 @@ void gibbsIteration(){
 }
 
 
-void outputResult(string f0, string f1 , string f2)
+void outputResult(string f0, string f1 , string f2, string fw)
 {
 	// Compute P(w|z) and P(z) and output to files
 	double** Pzw = new double*[N];
@@ -202,6 +202,34 @@ void outputResult(string f0, string f1 , string f2)
 		F2 << endl;
 	}
   F2.close();
+
+
+	ofstream Fw;
+  Fw.open (fw);
+
+	for (int t = 0; t < N; ++t)
+	{
+		priority_queue<pair<int,int> > q;
+		for (int i = 0; i < vocabSize; ++i)
+		{
+			q.push(pair<int,int>(nzw[t][i],i));
+		}
+		for (int i = 0; i < 10; ++i)
+		{
+			int ki = q.top().second; // index
+			// cout <<q.top().first << " "<<wordMapRev.find(ki)->second << " ";
+			cout << wordMapRev.find(ki)->second<<endl;
+			Fw << wordMapRev.find(ki)->second<<" " << Pzw[t][ki]<< " ";
+			q.pop();
+		}
+		Fw<<endl;
+		cout<<endl<<endl;
+	}
+
+
+	Fw.close();
+
+
 
 }
 int main(int argc, char const *argv[])
@@ -258,21 +286,6 @@ int main(int argc, char const *argv[])
 		gibbsIteration();
 	}
 
-	for (int t = 0; t < N; ++t)
-	{
-		priority_queue<pair<int,int> > q;
-		for (int i = 0; i < vocabSize; ++i)
-		{
-			q.push(pair<int,int>(nzw[t][i],i));
-		}
-		for (int i = 0; i < 10; ++i)
-		{
-			int ki = q.top().second; // index
-			cout <<q.top().first << " "<<wordMapRev.find(ki)->second << " ";
-			q.pop();
-		}
-		cout<<endl<<endl;
-	}
 
 
 	char f0[100];
@@ -288,7 +301,20 @@ int main(int argc, char const *argv[])
 	char f2[100];
 	strcpy(f2,path);
 	strcat(f2,"_word_topic_probs.txt");
-	outputResult(f0, f1, f2);
+
+	char fw[100];
+	strcpy(fw,path);
+	strcat(fw,"_topwords.txt");
+
+
+	outputResult(f0, f1, f2, fw);
+
+
+
+
+
+
+
 
 	// outputResult("Evaluation_units/BTM_results/wordMap_40.txt","Evaluation_units/BTM_results/topic_priors_40.txt", "Evaluation_units/BTM_results/word_topic_probs_40.txt");
 
